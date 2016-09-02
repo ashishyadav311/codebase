@@ -25,25 +25,51 @@ var coupon_code_exception_rids = [];
 
 var DEBUG = false;
 var debug_info = {};
+var getProjectDetailsUrl = 'https://www.makaan.com/petra/app/v4/project-detail';
+
+function getProjectDetails(projectIds){
+    var httpRequest = new XMLHttpRequest();
+    var id  = projectIds[0];
+    httpRequest.open('GET', getProjectDetailsUrl + '/' + id);
+    httpRequest.send();
+    httpRequest.onreadystatechange = function(){
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                var results = JSON.parse(httpRequest.responseText);
+            } else {
+                console.log('There was a problem to get project details.');
+            }
+        }
+    }
+}
 
 function alertContents() {
     if (httpRequest.readyState === XMLHttpRequest.DONE) {
         if (httpRequest.status === 200) {
-            alert(httpRequest.responseText);
+            console.log(httpRequest.responseText);
             var results = JSON.parse(httpRequest.responseText);
-            var projectId = parseInt(results.id.split('-')[2])
+            var datas = results.data.filter(function(data){
+                return data.id.split('-').length == 3;
+            });
+            var projectIds = datas.map(function(data){
+                return parseInt(data.id.split('-')[2]);
+            });
+            getProjectDetails(projectIds);
         } else {
-            alert('There was a problem with the request.');
+            console.log('There was a problem to get project results.');
         }
     }
 }
 var typeAhead = 'https://www.makaan.com/columbus/app/v5/typeahead?rows=5&enhance=gp&category=buy&view=buyer&sourceDomain=Makaan&format=json&query=';
 var name = $('.proj-name').eq(0).find('p').html();
 var httpRequest;
-httpRequest = new XMLHttpRequest();
-httpRequest.onreadystatechange = alertContents;
-httpRequest.open('GET', typeAhead + name);
-httpRequest.send();
+
+if (name) {
+    httpRequest = new XMLHttpRequest();
+    httpRequest.onreadystatechange = alertContents;
+    httpRequest.open('GET', typeAhead + name);
+    httpRequest.send();
+}
 
 // Kick off the process
 // init();

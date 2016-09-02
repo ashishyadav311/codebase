@@ -16,14 +16,14 @@ var interval = setInterval(function() {
 }, 10);
 
 function injectBlankSpace(response) {
-  if(response.coupons[0].coupons.length > 0 && response.disabled_status == 0) {
-    var css = document.createElement("link");
-    css.type = "text/css";
-    css.rel = "stylesheet";
-    css.href = css.href = iframe_url + "css/injected_early.css";
-    document.getElementsByTagName("head").item(0).appendChild(css);
-    //document.body.className += " priceblink-body";
-  }
+  // if(response.coupons[0].coupons.length > 0 && response.disabled_status == 0) {
+  //   var css = document.createElement("link");
+  //   css.type = "text/css";
+  //   css.rel = "stylesheet";
+  //   css.href = css.href = iframe_url + "css/injected_early.css";
+  //   document.getElementsByTagName("head").item(0).appendChild(css);
+  //   //document.body.className += " priceblink-body";
+  // }
 }
 
 /*
