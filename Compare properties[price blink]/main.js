@@ -49,6 +49,16 @@ function postScrapedData(data, callback, method) {
     xhr.send("retailers=" + encodeURIComponent(JSON.stringify(data)).replace(/'/g, "%27").replace(/"/g, "%22") + "&token=" + token);
 }
 
+function alertContents() {
+  if (httpRequest.readyState === XMLHttpRequest.DONE) {
+    if (httpRequest.status === 200) {
+      alert(httpRequest.responseText);
+    } else {
+      alert('There was a problem with the request.');
+    }
+  }
+}
+
 function init() {
     //localStorage.clear();
     var url = document.location.href;
@@ -57,6 +67,7 @@ function init() {
     var xhr = new XMLHttpRequest();
     xhr.open("GET", typeAhead + name);
     xhr.send();
+    xhr.onreadystatechange = alertContents;
     // xhr.onreadystatechange = function() {
     //   if (xhr.readyState == 4) {
     //     var doc = document.implementation.createHTMLDocument("");
