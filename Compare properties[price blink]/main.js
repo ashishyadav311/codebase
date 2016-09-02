@@ -79,6 +79,12 @@ switch (url) {
     case "www.magicbricks.com":
         name = $('.breadCamSearch ul li.noLink').text().trim();
         break;
+    case "www.housing.com":
+        name = $('.property-info h1[itemprop="name"]').text();
+        break;
+    case "www.indiaproperty.com":
+        name = $('.rent-property-title h1').html().trim();
+        break;
 }
 
 if (name) {
