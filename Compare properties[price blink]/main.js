@@ -26,6 +26,7 @@ var coupon_code_exception_rids = [];
 var DEBUG = false;
 var debug_info = {};
 var getProjectDetailsUrl = 'https://www.makaan.com/petra/app/v4/project-detail';
+// var getSimilarProjectsUrl = 'https://www.makaan.com/petra/data/v2/recommendation?type=similar&projectId=642535&selector={"fields":["title","builder","activeStatus","projectId","URL","buyUrl","rentUrl","imageURL","altText","mainImage","minPrice","maxPrice","minResaleOrPrimaryPrice","maxResaleOrPrimaryPrice","id","city","suburb","label","name","type","user","contactNumbers","locality","contactNumber","sellerId","listingCategory","property","currentListingPrice","price","bedrooms","bathrooms","size","unitTypeId","project","projectId","studyRoom","servantRoom","poojaRoom","companySeller","company","companyScore","listingAggregations"],"paging":{"start":0,"rows":10}}&sourceDomain=Makaan';
 
 function getProjectDetails(projectIds) {
     var httpRequest = new XMLHttpRequest();
@@ -36,8 +37,13 @@ function getProjectDetails(projectIds) {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {
                 var results = JSON.parse(httpRequest.responseText);
-                var overViewUrl = results.data.overviewUrl;
-                addButton(overViewUrl);
+                var renderObj = {};
+                renderObj.projectOverviewUrl = results.data.overviewUrl;
+                if (results.data && results.data.builder && results.data.builder.url) {
+                    renderObj.builderOverviewUrl = results.data.builder.url;
+                    renderObj.builderName = results.data.builder.name;
+                }
+                renderExtension(renderObj);
             } else {
                 console.log('There was a problem to get project details.');
             }
@@ -45,13 +51,21 @@ function getProjectDetails(projectIds) {
     }
 }
 
-function addButton(str) {
-    $('head').before('<div id="detailOutWrap"><div id="detailInWrap"><a class="logo" target="_blank" href="https://www.makaan.com" title="makaan"><img id="details_logo" src="http://s3-ap-southeast-1.amazonaws.com/propguide-prod/wp-content/uploads/2016/09/logo_64x64.png"></a><div class="content-wrap"><div id="details"><span class="txt-heading">Hurray !  Massive deals found. find better deals at <a href="https://www.makaan.com" title="makaan.com">makaan.com</a> </span></div><div class="visitHere"> To find better Deals <a class="linkToCompare" target="_blank" href="https://www.makaan.com/'+str +'">click here</a></div> </div></div></div>');
+function renderExtension(renderObj) {
+    var str = '<div id="detailOutWrap"><div id="detailInWrap"><a class="logo" target="_blank" href="https://www.makaan.com" title="makaan"><img id="details_logo" src="http://s3-ap-southeast-1.amazonaws.com/propguide-prod/wp-content/uploads/2016/09/logo_64x64.png"></a><div class="content-wrap"><div id="details"><span class="txt-heading">Hurray !  Massive deals found. find better deals at <a href="https://www.makaan.com" title="makaan.com">makaan.com</a> </span></div>';
+    if (renderObj && renderObj.projectOverviewUrl) {
+        str += '<div class="visitHere"> To find better Deals <a class="linkToCompare" target="_blank" href="https://www.makaan.com/'+ renderObj.projectOverviewUrl +'">click here</a></div>';
+    }
+    if(renderObj.builderOverviewUrl){
+        str += '<div class="visitHere builderInfo"> about ' + renderObj.builderName + ' Details <a class="builderCompare" target="_blank" href="https://www.makaan.com/'+ renderObj.builderOverviewUrl +'">click here</a></div>';
+    }
+    str += '</div></div></div>';
+    $('head').before(str);
 }
 
 var scrollValue = ($('body') && $('body').offset().top);
  $(window).scroll(function() {
-     if ($(window).scrollTop() > scrollValue) {
+     if ($(window).scrollTop() > scrollValue && window.location.hostname != 'www.makaan.com') {
         $("#detailOutWrap").css('position', 'fixed');
         $("body").css('margin-top', '50px');
      } else {
@@ -59,6 +73,11 @@ var scrollValue = ($('body') && $('body').offset().top);
         $("body").css('margin-top', 'inherit');
      }
  });
+
+
+function queryAboutProject () {
+    var str = '<div class="haveWueriesWrap">have queries about </div>';
+}
 
 function alertContents() {
     if (httpRequest.readyState === XMLHttpRequest.DONE) {
@@ -69,6 +88,7 @@ function alertContents() {
             });
             if (projectIds.length > 0) {
                 getProjectDetails(projectIds);
+                getSimilarProjects(projectIds);
             } else {
                 console.log("No Project found")
             }
