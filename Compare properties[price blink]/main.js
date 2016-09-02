@@ -29,19 +29,22 @@ var debug_info = {};
 function alertContents() {
     if (httpRequest.readyState === XMLHttpRequest.DONE) {
         if (httpRequest.status === 200) {
-            alert(httpRequest.responseText);
+            console.log(httpRequest.responseText);
         } else {
-            alert('There was a problem with the request.');
+            console.log('There was a problem with the request.');
         }
     }
 }
 var typeAhead = 'https://www.makaan.com/columbus/app/v5/typeahead?rows=5&enhance=gp&category=buy&view=buyer&sourceDomain=Makaan&format=json&query=';
 var name = $('.proj-name').eq(0).find('p').html();
 var httpRequest;
-httpRequest = new XMLHttpRequest();
-httpRequest.onreadystatechange = alertContents;
-httpRequest.open('GET', typeAhead + name);
-httpRequest.send();
+
+if (name) {
+    httpRequest = new XMLHttpRequest();
+    httpRequest.onreadystatechange = alertContents;
+    httpRequest.open('GET', typeAhead + name);
+    httpRequest.send();
+}
 
 // Kick off the process
 // init();
