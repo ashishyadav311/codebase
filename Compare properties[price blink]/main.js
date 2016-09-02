@@ -72,8 +72,8 @@ switch (url) {
     case "www.commonfloor.com":
         name = $('.proj-name').eq(0).find('p').html();
         break;
-    case "www.99acre.com":
-        name = $('.proj-name').eq(0).find('p').html();
+    case "www.99acres.com":
+        name = $('.tWhite').find('[itemprop="name"]').text();
         break;
     case "www.magicbricks.com":
         name = $('.proj-name').eq(0).find('p').html();
