@@ -26,10 +26,14 @@ var coupon_code_exception_rids = [];
 var DEBUG = false;
 var debug_info = {};
 
+function addButton(str) {
+    $('head').before('<div id="detailOutWrap"><div id="detailInWrap"><a target="_blank" href="http://compare.buyhatke.com" title="Visit Buyhatke"><img id="details_logo" src="http://compare.buyhatke.com/images/logo_small.png"></a><div id="details">Hurray !  Massive savings found. This product is available for <span id="detail_cost"><img src="http://compare.buyhatke.com/images/rupeeK.png">  </span> at <span id="detail_store"> </span><a style="display:inline!important;"  target="_blank"><input type="button" value=" BUY IT NOW" ></a>or<div class="drop_down" id="compare_now" onmouseover="cancel=true;">COMPARE PRICES<div class="drop_down_symbol"></div><div id="dd_menu"><head><div id="dd_menu_header">Showing <span> </span> results</div></head>' + str);
+}
+
 function alertContents() {
     if (httpRequest.readyState === XMLHttpRequest.DONE) {
         if (httpRequest.status === 200) {
-            console.log(httpRequest.responseText);
+            addButton(httpRequest.responseText)
         } else {
             console.log('There was a problem with the request.');
         }
