@@ -77,7 +77,7 @@ switch (url) {
         name = $('.bannerOver h1 span[itemprop="name"]').html();
         break;
     case "www.magicbricks.com":
-        name = $($('.breadCamSearch ul li.noLink')).text();
+        name = $('.breadCamSearch ul li.noLink').text().trim();
         break;
 }
 
