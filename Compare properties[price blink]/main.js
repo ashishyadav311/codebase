@@ -30,7 +30,7 @@ var getProjectDetailsUrl = 'https://www.makaan.com/petra/app/v4/project-detail';
 function getProjectDetails(projectIds) {
     var httpRequest = new XMLHttpRequest();
     var id = projectIds[0];
-    httpRequest.open('GET', getProjectDetailsUrl + '/' + id);
+    httpRequest.open('GET', getProjectDetailsUrl + '/' + id + "?sourceDomain=Makaan");
     httpRequest.send();
     httpRequest.onreadystatechange = function() {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
@@ -83,7 +83,7 @@ switch (url) {
 if (name) {
     httpRequest = new XMLHttpRequest();
     httpRequest.onreadystatechange = alertContents;
-    httpRequest.open('GET', typeAhead + name);
+    httpRequest.open('GET', typeAhead + name + '?sourceDomain=Makaan');
     httpRequest.send();
 }
 
