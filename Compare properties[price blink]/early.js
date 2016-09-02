@@ -8,7 +8,7 @@ else
 
 var interval = setInterval(function() {
   if(document.body != null) {
-    // chrome.extension.sendRequest({action: 'getRetailer', url: document.location.href, caller: 'early'}, injectBlankSpace);
+    chrome.extension.sendRequest({action: 'getRetailer', url: document.location.href, caller: 'early'}, injectBlankSpace);
     // Entry point for push notifications
     //chrome.extension.sendRequest({action: 'getPushCoupons', url: document.location.href}, injectPushCoupons);
     clearInterval(interval);
