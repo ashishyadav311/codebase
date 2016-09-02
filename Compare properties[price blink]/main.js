@@ -46,7 +46,7 @@ function getProjectDetails(projectIds) {
 }
 
 function addButton(str) {
-    $('head').before('<div id="detailOutWrap"><div id="detailInWrap"><a target="_blank" href="http://compare.buyhatke.com" title="Visit Buyhatke"><img id="details_logo" src="http://compare.buyhatke.com/images/logo_small.png"></a><div id="details">Hurray !  Massive savings found. This product is available for <span id="detail_cost"><img src="http://compare.buyhatke.com/images/rupeeK.png">  </span> at <span id="detail_store"> </span><a style="display:inline!important;"  target="_blank"><input type="button" value=" BUY IT NOW" ></a>or<div class="drop_down" id="compare_now" onmouseover="cancel=true;">COMPARE PRICES<div class="drop_down_symbol"></div><div id="dd_menu"><head><div id="dd_menu_header">Showing <span> </span> results</div></head>');
+    $('head').before('<div id="detailOutWrap"><div id="detailInWrap"><a class="logo" target="_blank" href="https://www.makaan.com" title="makaan"><img id="details_logo" src="http://s3-ap-southeast-1.amazonaws.com/propguide-prod/wp-content/uploads/2016/09/logo_64x64.png"></a><div class="content-wrap"><div id="details"><span class="txt-heading">Hurray !  Massive deals found. find better deals at <a href="www.makaan.com" title="makaan.com">makaan.com</a> </span></div><div class="visitHere"> To find better Deals <a class="linkToCompare" target="_blank" href="https://www.makaan.com/'+str +'">click here</a></div> </div></div></div>');
 }
 
 function alertContents() {
