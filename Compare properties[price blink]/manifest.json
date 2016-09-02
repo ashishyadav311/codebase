@@ -4,9 +4,6 @@
   "version": "1.0.0",
   "manifest_version": 2,
 	"permissions": ["http://*/",  "https://*/", "tabs", "webNavigation", "webRequest"],
-	"background": {
-	  "scripts": ["background.js"]
-	},
 	"content_scripts": [ {
 		"all_frames": false,
 		"js": [ "jqueryLib.js","main.js"],
@@ -22,7 +19,7 @@
 	"browser_action": {
 	  "default_icon": "images/logo_32x32.png",
 	  "default_title": "Compare Properties",
-	  "default_popup": "coupons_popup.html"
+	  "default_popup": "menu.html"
 	},
 	"icons": { "16": "images/logo_16x16.png",
 	           "32": "images/logo_32x32.png",

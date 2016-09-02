@@ -84,11 +84,17 @@ switch (url) {
     case "www.commonfloor.com":
         name = $('.proj-name').eq(0).find('p').html();
         break;
-    case "www.99acre.com":
-        name = $('.bannerOver h1 span[itemprop="name"]').html();
+    case "www.99acres.com":
+        name = $('.tWhite').find('[itemprop="name"]').text();
         break;
     case "www.magicbricks.com":
-        name = $($('.breadCamSearch ul li.noLink')).text();
+        name = $('.breadCamSearch ul li.noLink').text().trim();
+        break;
+    case "www.housing.com":
+        name = $('.property-info h1[itemprop="name"]').text();
+        break;
+    case "www.indiaproperty.com":
+        name = $('.rent-property-title h1').html().trim();
         break;
 }
 
