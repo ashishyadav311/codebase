@@ -26,108 +26,102 @@ var coupon_code_exception_rids = [];
 var DEBUG = false;
 var debug_info = {};
 
-// Kick off the process
-init();
-
-function postScrapedData(data, callback, method) {
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4) {
-            var results = JSON.parse(xhr.responseText);
-            var end = new Date().getTime() - debug_start.getTime();
-            callback({ retailer: current_retailer, products: results, debug: { "method": method, "search_url": debug_g_search_url, "prices_url": debug_g_prices_url, "time": end } });
+function alertContents() {
+    if (httpRequest.readyState === XMLHttpRequest.DONE) {
+        if (httpRequest.status === 200) {
+            alert(httpRequest.responseText);
+        } else {
+            alert('There was a problem with the request.');
         }
     }
-
-    var cur_url = "http://tb.priceblink.com/get_prices.php?n=" + new Date().getMilliseconds();
-    if (debugExtensionID != "") {
-        chrome.runtime.sendMessage(debugExtensionID, { extension: "PriceBlink", get_prices: cur_url, data: data, token: token, params: debug_params, retailer: current_retailer })
-    }
-
-    xhr.open("POST", cur_url, true);
-    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhr.send("retailers=" + encodeURIComponent(JSON.stringify(data)).replace(/'/g, "%27").replace(/"/g, "%22") + "&token=" + token);
 }
+var url = document.location.href;
+var typeAhead = 'https://www.makaan.com/columbus/app/v5/typeahead?rows=5&enhance=gp&category=buy&view=buyer&sourceDomain=Makaan&format=json&query=';
+var name = $('.proj-name').eq(0).find('p').html();
+var xhr = new XMLHttpRequest();
+// xhr.open("GET", typeAhead + name);
+// xhr.send();
+// xhr.onreadystatechange = function() {
+//     if (xhr.readyState == 4) {
+//         alert(httpRequest.responseText);
+//     }
+// }
 
-function alertContents() {
-  if (httpRequest.readyState === XMLHttpRequest.DONE) {
-    if (httpRequest.status === 200) {
-      alert(httpRequest.responseText);
-    } else {
-      alert('There was a problem with the request.');
-    }
-  }
-}
+var httpRequest;
 
-function init() {
-    //localStorage.clear();
-    var url = document.location.href;
-    var typeAhead = 'https://www.makaan.com/columbus/app/v5/typeahead?rows=5&enhance=gp&category=buy&view=buyer&sourceDomain=Makaan&format=json&query=';
-    var name = $('.proj-name').eq(0).find('p').html();
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", typeAhead + name);
-    xhr.send();
-    xhr.onreadystatechange = alertContents;
-    // xhr.onreadystatechange = function() {
-    //   if (xhr.readyState == 4) {
-    //     var doc = document.implementation.createHTMLDocument("");
-    //     doc.documentElement.innerHTML = xhr.responseText;
+httpRequest = new XMLHttpRequest();
+httpRequest.onreadystatechange = alertContents;
+httpRequest.open('GET', typeAhead + name);
+httpRequest.send();
 
-    //     var href = typeAhead + name;
-    //     var price = getXPathString(doc, universal_scrapes[0].a_price_xpath);
-    //     var title = getXPathString(doc, universal_scrapes[0].a_title_xpath);
-    //     var name = "Amazon.com";
+// Kick off the process
+// init();
 
-    //     // Don't set the URL unless a valid one exists
-    //     if(href.length > BASE_AMAZON_URL.length)
-    //       scraped_retailers_arr.push({name: name, url: href, price: price, title: title});
-
-    //     postScrapedData(scraped_retailers_arr, callback, method);
-
-    //   }
-    // }
+// function init() {
+//localStorage.clear();
 
 
-    //  if(document.location.protocol == "https:")
-    //    iframe_url = "https://" + iframe_url;
-    //  else
-    //    iframe_url = "http://" + iframe_url;
 
-    // if(url.indexOf(".dell.com") != -1) {
-    //  chrome.extension.sendRequest({action: 'getCoupons', url: document.location.href, retailer_id: getDell()}, setCoupons);
-    // } else {
-    //  chrome.extension.sendRequest({action: 'getRetailer', url: document.location.href, caller: 'main'}, setCoupons);
-    // }
+// xhr.onreadystatechange = function() {
+//   if (xhr.readyState == 4) {
+//     var doc = document.implementation.createHTMLDocument("");
+//     doc.documentElement.innerHTML = xhr.responseText;
 
-    // // Listen for the minimize event to temporarily disable toolbar
-    //  var minimizeListener = function(evt) {
-    //    var dt = new Date();
+//     var href = typeAhead + name;
+//     var price = getXPathString(doc, universal_scrapes[0].a_price_xpath);
+//     var title = getXPathString(doc, universal_scrapes[0].a_title_xpath);
+//     var name = "Amazon.com";
 
-    //    // Minimize for 24 hours
-    //    dt = new Date(dt.getTime() + (24 * 60 * 60 * 1000));
-    //    chrome.extension.sendRequest({action: 'disableCoupons', retailer:{id: current_retailer.id, dt: dt.getTime()}});
+//     // Don't set the URL unless a valid one exists
+//     if(href.length > BASE_AMAZON_URL.length)
+//       scraped_retailers_arr.push({name: name, url: href, price: price, title: title});
 
-    //  }
-    //  document.addEventListener("PB_Minimize_Event", minimizeListener, false, true);
+//     postScrapedData(scraped_retailers_arr, callback, method);
 
-    //  // Listen for retailer disable events to permanently disable toolbar
-    //  var disableListener = function(evt) {
-    //    chrome.extension.sendRequest({action: 'disableCoupons', retailer:{id: current_retailer.id}});
-    //  }
-    //  window.addEventListener("PB_Disable_Event", disableListener, false, true);
+//   }
+// }
 
-    //  // Listen for toolbar restore event after being temporarily disabled
-    //  var restoreListener = function(evt) {
-    //    chrome.extension.sendRequest({action: 'restoreCoupons', retailer_id: current_retailer.id});
-    //  }
-    //  window.addEventListener("PB_Restore_Event", restoreListener, false, true);
 
-    //  // Listen for toolbar highlighted retailer event
-    //  var highlightListener = function(evt) {
-    //    chrome.extension.sendRequest({action: 'highlightRetailer', coupons: coupons});
-    //  }
-    //  document.addEventListener("PB_Highlight_Event", highlightListener, false, true);
-}
+//  if(document.location.protocol == "https:")
+//    iframe_url = "https://" + iframe_url;
+//  else
+//    iframe_url = "http://" + iframe_url;
+
+// if(url.indexOf(".dell.com") != -1) {
+//  chrome.extension.sendRequest({action: 'getCoupons', url: document.location.href, retailer_id: getDell()}, setCoupons);
+// } else {
+//  chrome.extension.sendRequest({action: 'getRetailer', url: document.location.href, caller: 'main'}, setCoupons);
+// }
+
+// // Listen for the minimize event to temporarily disable toolbar
+//  var minimizeListener = function(evt) {
+//    var dt = new Date();
+
+//    // Minimize for 24 hours
+//    dt = new Date(dt.getTime() + (24 * 60 * 60 * 1000));
+//    chrome.extension.sendRequest({action: 'disableCoupons', retailer:{id: current_retailer.id, dt: dt.getTime()}});
+
+//  }
+//  document.addEventListener("PB_Minimize_Event", minimizeListener, false, true);
+
+//  // Listen for retailer disable events to permanently disable toolbar
+//  var disableListener = function(evt) {
+//    chrome.extension.sendRequest({action: 'disableCoupons', retailer:{id: current_retailer.id}});
+//  }
+//  window.addEventListener("PB_Disable_Event", disableListener, false, true);
+
+//  // Listen for toolbar restore event after being temporarily disabled
+//  var restoreListener = function(evt) {
+//    chrome.extension.sendRequest({action: 'restoreCoupons', retailer_id: current_retailer.id});
+//  }
+//  window.addEventListener("PB_Restore_Event", restoreListener, false, true);
+
+//  // Listen for toolbar highlighted retailer event
+//  var highlightListener = function(evt) {
+//    chrome.extension.sendRequest({action: 'highlightRetailer', coupons: coupons});
+//  }
+//  document.addEventListener("PB_Highlight_Event", highlightListener, false, true);
+// }
 
 function getXPathContent(xpath) {
     if (xpath == undefined || xpath == "") return "";
