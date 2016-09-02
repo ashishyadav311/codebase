@@ -25,6 +25,24 @@ var coupon_code_exception_rids = [];
 
 var DEBUG = false;
 var debug_info = {};
+var getProjectDetailsUrl = 'https://www.makaan.com/petra/app/v4/project-detail';
+
+function getProjectDetails(projectIds){
+    var httpRequest = new XMLHttpRequest();
+    var id  = projectIds[0];
+    httpRequest.open('GET', getProjectDetailsUrl + '/' + id);
+    httpRequest.send();
+    httpRequest.onreadystatechange = function(){
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                var results = JSON.parse(httpRequest.responseText);
+                addButton(results);
+            } else {
+                console.log('There was a problem to get project details.');
+            }
+        }
+    }
+}
 
 function addButton(str) {
     $('head').before('<div id="detailOutWrap"><div id="detailInWrap"><a target="_blank" href="http://compare.buyhatke.com" title="Visit Buyhatke"><img id="details_logo" src="http://compare.buyhatke.com/images/logo_small.png"></a><div id="details">Hurray !  Massive savings found. This product is available for <span id="detail_cost"><img src="http://compare.buyhatke.com/images/rupeeK.png">  </span> at <span id="detail_store"> </span><a style="display:inline!important;"  target="_blank"><input type="button" value=" BUY IT NOW" ></a>or<div class="drop_down" id="compare_now" onmouseover="cancel=true;">COMPARE PRICES<div class="drop_down_symbol"></div><div id="dd_menu"><head><div id="dd_menu_header">Showing <span> </span> results</div></head>' );
@@ -33,9 +51,17 @@ function addButton(str) {
 function alertContents() {
     if (httpRequest.readyState === XMLHttpRequest.DONE) {
         if (httpRequest.status === 200) {
-            addButton(httpRequest.responseText)
+            console.log(httpRequest.responseText);
+            var results = JSON.parse(httpRequest.responseText);
+            var datas = results.data.filter(function(data){
+                return data.id.split('-').length == 3;
+            });
+            var projectIds = datas.map(function(data){
+                return parseInt(data.id.split('-')[2]);
+            });
+            getProjectDetails(projectIds);
         } else {
-            console.log('There was a problem with the request.');
+            console.log('There was a problem to get project results.');
         }
     }
 }
