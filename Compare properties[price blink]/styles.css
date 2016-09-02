@@ -1,3 +1,17 @@
+
+@font-face {
+    font-family: 'comfortaalight';
+    src: url('/fonts/comfortaa-light.eot');
+    src: url('/fonts/comfortaa-light.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/comfortaa-light.woff2') format('woff2'),
+         url('/fonts/comfortaa-light.woff') format('woff'),
+         url('/fonts/comfortaa-light.ttf') format('truetype'),
+         url('/fonts/comfortaa-light.svg#comfortaalight') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+}
+
 .priceblink-body {
 	margin-top: 32px !important;
 }
@@ -113,3 +127,36 @@
 	padding: 0;
 	background-color: transparent;
 }
+
+#detailOutWrap{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 999999;
+	box-shadow: 0 0 3px -1px rgba(120, 120, 120, .6);
+	background-color: #ffffff;
+}
+
+#detailOutWrap .logo{
+    display: inline-block;
+    vertical-align: top;
+    width: 50px;
+    height: 50px;
+}
+#detailOutWrap .logo img{
+    width: 100%;
+    height: auto;
+}
+
+#detailOutWrap #details{
+    width: calc(100% - 52px);
+    display: inline-block;
+    vertical-align: top;
+}
+
+#details .txt-heading{
+    font-family: "comfortaalight";
+}
+
+
