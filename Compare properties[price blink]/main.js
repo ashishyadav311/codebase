@@ -26,6 +26,7 @@ var coupon_code_exception_rids = [];
 var DEBUG = false;
 var debug_info = {};
 var getProjectDetailsUrl = 'https://www.makaan.com/petra/app/v4/project-detail';
+// var getSimilarProjectsUrl = 'https://www.makaan.com/petra/data/v2/recommendation?type=similar&projectId=642535&selector={"fields":["title","builder","activeStatus","projectId","URL","buyUrl","rentUrl","imageURL","altText","mainImage","minPrice","maxPrice","minResaleOrPrimaryPrice","maxResaleOrPrimaryPrice","id","city","suburb","label","name","type","user","contactNumbers","locality","contactNumber","sellerId","listingCategory","property","currentListingPrice","price","bedrooms","bathrooms","size","unitTypeId","project","projectId","studyRoom","servantRoom","poojaRoom","companySeller","company","companyScore","listingAggregations"],"paging":{"start":0,"rows":10}}&sourceDomain=Makaan';
 
 var helperFunction = {
     getFormetedPrice : function(price){
@@ -51,6 +52,16 @@ function getProjectDetails(projectIds, data) {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {
                 var results = JSON.parse(httpRequest.responseText);
+
+                var renderObj = {};
+                renderObj.projectOverviewUrl = results.data.overviewUrl;
+                if (results.data && results.data.builder && results.data.builder.url) {
+                    renderObj.builderOverviewUrl = results.data.builder.url;
+                    renderObj.builderName = results.data.builder.name;
+                }
+
+
+
                 var makaanProjectPrice = results.data.minPrice + results.data.maxPrice / 2;
                 var overViewUrl = results.data.overviewUrl;
                 var price;
@@ -59,19 +70,25 @@ function getProjectDetails(projectIds, data) {
                 }else{
                     price = (helperFunction.getFormetedPrice(data.minPrice) + helperFunction.getFormetedPrice(data.maxPrice)) / 2;
                 }
+                renderObj.minPrice =  results.data.minPrice;
+                renderObj.maxPrice = results.data.maxPrice;
                 if(url != 'www.commonfloor.com'){
-                    //give no price 
-                    addButton(overViewUrl);
+                    //give no price
+                    renderExtension(renderObj);
+                    // addButton(overViewUrl);
                     return;
                 }
                 if(!price){
                     //give minPrice and maxPrice price
-                    addButton(overViewUrl);
+                    renderExtension(renderObj);
+                    // addButton(overViewUrl);
                     return;
                 }
                 if(price && price <= makaanProjectPrice)
                     //give minPrice and maxPrice price
-                    addButton(overViewUrl);
+                    // addButton(overViewUrl);
+                    renderExtension(renderObj);
+
                     return;
                 
             } else {
@@ -81,8 +98,18 @@ function getProjectDetails(projectIds, data) {
     }
 }
 
-function addButton(str) {
-    $('head').before('<div id="detailOutWrap"><div id="detailInWrap"><a target="_blank" href="http://compare.buyhatke.com" title="Visit Buyhatke"><img id="details_logo" src="http://compare.buyhatke.com/images/logo_small.png"></a><div id="details">Hurray !  Massive savings found. This product is available for <span id="detail_cost"><img src="http://compare.buyhatke.com/images/rupeeK.png">  </span> at <span id="detail_store"> </span><a style="display:inline!important;"  target="_blank"><input type="button" value=" BUY IT NOW" ></a>or<div class="drop_down" id="compare_now" onmouseover="cancel=true;">COMPARE PRICES<div class="drop_down_symbol"></div><div id="dd_menu"><head><div id="dd_menu_header">Showing <span> </span> results</div></head>');
+function renderExtension(renderObj) {
+    //access renderObj.minPrice and renderObj.maxPrice
+    var str = '<div id="detailOutWrap"><div id="detailInWrap"><a class="logo" target="_blank" href="https://www.makaan.com" title="makaan"><img id="details_logo" src="http://s3-ap-southeast-1.amazonaws.com/propguide-prod/wp-content/uploads/2016/09/logo_64x64.png"></a><div class="content-wrap"><div id="details"><span class="txt-heading">Hurray !  Massive deals found. find better deals at <a href="www.makaan.com" title="makaan.com">makaan.com</a> </span></div>';
+    if (renderObj && renderObj.projectOverviewUrl) {
+        str += '<div class="visitHere"> To find better Deals <a class="linkToCompare" target="_blank" href="https://www.makaan.com/'+ renderObj.projectOverviewUrl +'">click here</a></div>';
+    }
+    if(renderObj.builderOverviewUrl){
+        str += '<div class="visitHere"> To find ' + renderObj.builderName + ' Details <a class="linkToCompare" target="_blank" href="https://www.makaan.com/'+ renderObj.builderOverviewUrl +'">click here</a></div>';
+    }
+    
+    str += '</div></div></div>';
+    $('head').before(str);
 }
 
 function getProjectDataCommonFloor(){
@@ -158,6 +185,12 @@ switch (url) {
         break;
     case "www.magicbricks.com":
         name = $('.breadCamSearch ul li.noLink').text().trim();
+        break;
+    case "www.housing.com":
+        name = $('.property-info h1[itemprop="name"]').text();
+        break;
+    case "www.indiaproperty.com":
+        name = $('.rent-property-title h1').html().trim();
         break;
 }
 

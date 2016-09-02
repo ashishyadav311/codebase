@@ -1,3 +1,17 @@
+
+@font-face {
+    font-family: 'comfortaalight';
+    src: url('https://cdn-buyer1.makaan.com/iq/fonts/fonts/comfortaa-light.eot');
+    src: url('https://cdn-buyer1.makaan.com/iq/fonts/comfortaa-light.eot?#iefix') format('embedded-opentype'),
+         url('https://cdn-buyer1.makaan.com/iq/fonts/comfortaa-light.woff2') format('woff2'),
+         url('https://cdn-buyer1.makaan.com/iq/fonts/comfortaa-light.woff') format('woff'),
+         url('https://cdn-buyer1.makaan.com/iq/fonts/comfortaa-light.ttf') format('truetype'),
+         url('https://cdn-buyer1.makaan.com/iq/fonts/comfortaa-light.svg#comfortaalight') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+}
+
 .priceblink-body {
 	margin-top: 32px !important;
 }
@@ -113,3 +127,75 @@
 	padding: 0;
 	background-color: transparent;
 }
+
+#detailOutWrap{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 999999;
+	box-shadow: 0 0 3px -1px rgba(120, 120, 120, .6);
+	background-color: #ffffff;
+    padding: 5px 20px;
+}
+
+#detailOutWrap .logo{
+    display: inline-block;
+    vertical-align: top;
+    width: 50px;
+    height: 50px;
+}
+#detailOutWrap .logo img{
+    width: 100%;
+    height: auto;
+}
+
+#detailOutWrap #details{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#detailOutWrap .content-wrap{
+    margin-left: 15px;
+    display: inline-block;
+    vertical-align: middle;
+    width: calc(100% - 70px);
+}
+
+#details .txt-heading{
+    font-family: "comfortaalight";
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 3px;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+#details .txt-heading a{
+    color: #e81c28;
+}
+
+#details #detail_cost{
+    font-size: 16px;
+    display: inline-block;
+}
+
+#details #detail_cost img{
+    width: 8px;
+    height: auto;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.visitHere{
+    font-size: 16px;
+}
+
+
+.visitHere a{
+    color: #e81c28;
+    text-decoration: underline;
+}
+
+
+
