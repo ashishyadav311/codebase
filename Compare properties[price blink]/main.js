@@ -35,20 +35,9 @@ function alertContents() {
         }
     }
 }
-var url = document.location.href;
 var typeAhead = 'https://www.makaan.com/columbus/app/v5/typeahead?rows=5&enhance=gp&category=buy&view=buyer&sourceDomain=Makaan&format=json&query=';
 var name = $('.proj-name').eq(0).find('p').html();
-var xhr = new XMLHttpRequest();
-// xhr.open("GET", typeAhead + name);
-// xhr.send();
-// xhr.onreadystatechange = function() {
-//     if (xhr.readyState == 4) {
-//         alert(httpRequest.responseText);
-//     }
-// }
-
 var httpRequest;
-
 httpRequest = new XMLHttpRequest();
 httpRequest.onreadystatechange = alertContents;
 httpRequest.open('GET', typeAhead + name);
