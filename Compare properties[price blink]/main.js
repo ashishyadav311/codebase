@@ -73,10 +73,10 @@ switch (url) {
         name = $('.proj-name').eq(0).find('p').html();
         break;
     case "www.99acre.com":
-        name = $('.proj-name').eq(0).find('p').html();
+        name = $('.bannerOver h1 span[itemprop="name"]').html();
         break;
     case "www.magicbricks.com":
-        name = $('.proj-name').eq(0).find('p').html();
+        name = $($('.breadCamSearch ul li.noLink')).text();
         break;
 }
 
