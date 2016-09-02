@@ -27,7 +27,22 @@ var DEBUG = false;
 var debug_info = {};
 var getProjectDetailsUrl = 'https://www.makaan.com/petra/app/v4/project-detail';
 
-function getProjectDetails(projectIds) {
+var helperFunction = {
+    getFormetedPrice : function(price){
+        if(price.indexOf('C')){
+            return parseFloat(price.split('C')[0]) * 10000000;
+        }
+        if(price.indexOf('L')){
+            return parseFloat(price.split('L')[0]) * 100000;   
+        }
+        if(price.indexOf('T')){
+            return parseFloat(price.split('T')[0]) * 1000;   
+        }
+        return 0;
+    }
+}
+
+function getProjectDetails(projectIds, data) {
     var httpRequest = new XMLHttpRequest();
     var id = projectIds[0];
     httpRequest.open('GET', getProjectDetailsUrl + '/' + id + "?sourceDomain=Makaan");
@@ -36,8 +51,29 @@ function getProjectDetails(projectIds) {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {
                 var results = JSON.parse(httpRequest.responseText);
+                var makaanProjectPrice = results.data.minPrice + results.data.maxPrice / 2;
                 var overViewUrl = results.data.overviewUrl;
-                addButton(overViewUrl);
+                var price;
+                if(!data.minPrice && !data.maxPrice){
+                    price = null;
+                }else{
+                    price = (helperFunction.getFormetedPrice(data.minPrice) + helperFunction.getFormetedPrice(data.maxPrice)) / 2;
+                }
+                if(url != 'www.commonfloor.com'){
+                    //give no price 
+                    addButton(overViewUrl);
+                    return;
+                }
+                if(!price){
+                    //give minPrice and maxPrice price
+                    addButton(overViewUrl);
+                    return;
+                }
+                if(price && price <= makaanProjectPrice)
+                    //give minPrice and maxPrice price
+                    addButton(overViewUrl);
+                    return;
+                
             } else {
                 console.log('There was a problem to get project details.');
             }
@@ -49,6 +85,31 @@ function addButton(str) {
     $('head').before('<div id="detailOutWrap"><div id="detailInWrap"><a target="_blank" href="http://compare.buyhatke.com" title="Visit Buyhatke"><img id="details_logo" src="http://compare.buyhatke.com/images/logo_small.png"></a><div id="details">Hurray !  Massive savings found. This product is available for <span id="detail_cost"><img src="http://compare.buyhatke.com/images/rupeeK.png">  </span> at <span id="detail_store"> </span><a style="display:inline!important;"  target="_blank"><input type="button" value=" BUY IT NOW" ></a>or<div class="drop_down" id="compare_now" onmouseover="cancel=true;">COMPARE PRICES<div class="drop_down_symbol"></div><div id="dd_menu"><head><div id="dd_menu_header">Showing <span> </span> results</div></head>');
 }
 
+function getProjectDataCommonFloor(){
+        var httpRequest = new XMLHttpRequest();
+        var project_id = location.pathname.split('/')[2].split('-')[1];
+        httpRequest.open('GET', 'https://www.commonfloor.com/properties/listing/get-listings-for-project/?project_id=' + project_id);
+        httpRequest.send();
+        var url = 'https://www.commonfloor.com/properties/listing/get-listings-for-project/?project_id=' + project_id;
+        var options = {
+                method: 'GET',
+                url: url
+        };
+        var request = $.ajax(options);
+        var promise = request
+                .then(function(response) {
+                    return response;
+                }, function(error) {
+                    // TODO Need to send info via isCustomError
+                    return error;
+                    (function(error, isCustomError) {
+                        return errorHandler(error, isCustomError);
+                    })(error, isCustomError)
+                })
+                .always(function() {});
+            promise.abort = request.abort;
+            return promise;
+}
 function alertContents() {
     if (httpRequest.readyState === XMLHttpRequest.DONE) {
         if (httpRequest.status === 200) {
@@ -57,7 +118,26 @@ function alertContents() {
                 return parseInt(data.id.split('-')[2]);
             });
             if (projectIds.length > 0) {
-                getProjectDetails(projectIds);
+                if(url == 'www.commonfloor.com'){
+                    getProjectDataCommonFloor().then(function(response){
+                        response = JSON.parse(response);
+                        var minPrice = response.data.results[0].price;
+                        var maxPrice = response.data.results[response.data.results.length-1].price;
+                        var data = {};
+                        data.minPrice = minPrice;
+                        data.maxPrice = maxPrice;
+                        getProjectDetails(projectIds, data);
+                    }, function(error){
+                        console.log('some error occured in fetching price');
+                    });
+                    
+                } 
+                if(url == 'www.magicbricks.com'){
+                    var minPrice;
+                    var maxPrice;
+                    var data = {};
+                    getProjectDetails(projectIds, data);
+                }
             } else {
                 console.log("No Project found")
             }
