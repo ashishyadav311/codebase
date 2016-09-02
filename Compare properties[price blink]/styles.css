@@ -197,5 +197,23 @@
     text-decoration: underline;
 }
 
+.visitHere.builderInfo{
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 999;
+    font-family: "comfortaalight";
+}
+.visitHere.builderInfo a{
+    cursor: pointer;
+}
+
+.visitHere.builderInfo a:hover{
+    color: #e81c28;
+}
+
+
+
+
 
 

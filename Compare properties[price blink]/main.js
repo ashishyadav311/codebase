@@ -51,12 +51,12 @@ function getProjectDetails(projectIds) {
 }
 
 function renderExtension(renderObj) {
-    var str = '<div id="detailOutWrap"><div id="detailInWrap"><a class="logo" target="_blank" href="https://www.makaan.com" title="makaan"><img id="details_logo" src="http://s3-ap-southeast-1.amazonaws.com/propguide-prod/wp-content/uploads/2016/09/logo_64x64.png"></a><div class="content-wrap"><div id="details"><span class="txt-heading">Hurray !  Massive deals found. find better deals at <a href="www.makaan.com" title="makaan.com">makaan.com</a> </span></div>';
+    var str = '<div id="detailOutWrap"><div id="detailInWrap"><a class="logo" target="_blank" href="https://www.makaan.com" title="makaan"><img id="details_logo" src="http://s3-ap-southeast-1.amazonaws.com/propguide-prod/wp-content/uploads/2016/09/logo_64x64.png"></a><div class="content-wrap"><div id="details"><span class="txt-heading">Hurray !  Massive deals found. find better deals at <a href="https://www.makaan.com" title="makaan.com">makaan.com</a> </span></div>';
     if (renderObj && renderObj.projectOverviewUrl) {
         str += '<div class="visitHere"> To find better Deals <a class="linkToCompare" target="_blank" href="https://www.makaan.com/'+ renderObj.projectOverviewUrl +'">click here</a></div>';
     }
     if(renderObj.builderOverviewUrl){
-        str += '<div class="visitHere"> To find ' + renderObj.builderName + ' Details <a class="linkToCompare" target="_blank" href="https://www.makaan.com/'+ renderObj.builderOverviewUrl +'">click here</a></div>';
+        str += '<div class="visitHere builderInfo"> about ' + renderObj.builderName + ' Details <a class="builderCompare" target="_blank" href="https://www.makaan.com/'+ renderObj.builderOverviewUrl +'">click here</a></div>';
     }
     str += '</div></div></div>';
     $('head').before(str);
@@ -64,7 +64,7 @@ function renderExtension(renderObj) {
 
 var scrollValue = ($('body') && $('body').offset().top);
  $(window).scroll(function() {
-     if ($(window).scrollTop() > scrollValue) {
+     if ($(window).scrollTop() > scrollValue && window.location.hostname != 'www.makaan.com') {
         $("#detailOutWrap").css('position', 'fixed');
         $("body").css('margin-top', '50px');
      } else {
@@ -72,6 +72,11 @@ var scrollValue = ($('body') && $('body').offset().top);
         $("body").css('margin-top', 'inherit');
      }
  });
+
+
+function queryAboutProject () {
+    var str = '<div class="haveWueriesWrap">have queries about </div>';
+}
 
 function alertContents() {
     if (httpRequest.readyState === XMLHttpRequest.DONE) {
