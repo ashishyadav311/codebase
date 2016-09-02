@@ -12,6 +12,59 @@
     -webkit-font-smoothing: antialiased;
 }
 
+
+/********************basic styles************************/
+/*** Body ***/
+/*** text colors ***/
+/*** text colors ***/
+/*** font sizes ***/
+/* Button v2 with 2 border radius 25px and 6px  */
+.btnv2 {
+  display: inline-block;
+  padding: 6px 25px;
+  border: solid 1px transparent;
+  border-left: solid 6px transparent;
+  border-top-left-radius: 6px;
+  border-bottom-right-radius: 25px;
+  color: #e81c28;
+  font-size: 16px;
+  white-space: nowrap;
+  vertical-align: middle;
+  text-align: center;
+  cursor: pointer;
+}
+.btnv2:hover {
+  text-decoration: none;
+  color: #e4101d;
+}
+.btnv2.disabled {
+  color: #999999 !important;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btnv2-p {
+  background-color: #e81c28;
+  color: #fff !important;
+  border: none;
+  border-left: solid 6px #fba510;
+}
+.btnv2-p:hover {
+  background-color: #e4101d;
+  border-left-color: #8f0f16;
+}
+.btnv2-p.disabled {
+  background-color: #f17980;
+  border-left-color: #d41621;
+}
+.btnv2-p.disabled:hover {
+  background-color: #f17980;
+  border-left-color: #d41621;
+}
+
+
+/********************basic styles************************/
+
 .priceblink-body {
 	margin-top: 32px !important;
 }
@@ -213,7 +266,32 @@
 }
 
 
+#haveQueriesWrap{
+    position: fixed;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+    background-color: #ffffff;
+    height: 40px;
+}
 
+.leadForm{
+    padding: 20px;
+    font-family: "comfortaalight";
+    font-size: 16px;
+    text-align: center;
+}
 
+.leadForm input{
+    border: 0;
+    border-bottom: 1px solid #cdcdcd;
+    text-align: left;
+    padding-left: 10px;
+    margin-left: 15px;
+}
 
+.leadForm button{
+    margin-left: 15px;
+}
 

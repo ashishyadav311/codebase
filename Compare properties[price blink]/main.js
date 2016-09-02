@@ -60,6 +60,8 @@ function renderExtension(renderObj) {
         str += '<div class="visitHere builderInfo"> about ' + renderObj.builderName + ' Details <a class="builderCompare" target="_blank" href="https://www.makaan.com/'+ renderObj.builderOverviewUrl +'">click here</a></div>';
     }
     str += '</div></div></div>';
+    str += '<div class="leadForm"><span>Do you have a query? </span> You can contact us <input placeholder="email" type="email" id="leadID" class="lead-input" /> <input placeholder="contact" type="tel" id="contact" class="contact" /> <button class="btnv2 btnv2-p"> Submit </button> </div>';
+
     $('head').before(str);
 }
 
@@ -76,8 +78,11 @@ var scrollValue = ($('body') && $('body').offset().top);
 
 
 function queryAboutProject () {
-    var str = '<div class="haveWueriesWrap">have queries about </div>';
+    if ($(window).scrollTop() > scrollValue && window.location.hostname != 'www.makaan.com') {
+        var str = '<div id="haveQueriesWrap">have queries about </div>';
+    }
 }
+queryAboutProject();
 
 function alertContents() {
     if (httpRequest.readyState === XMLHttpRequest.DONE) {
