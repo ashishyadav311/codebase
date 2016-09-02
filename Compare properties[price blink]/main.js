@@ -63,6 +63,17 @@ function renderExtension(renderObj) {
     $('head').before(str);
 }
 
+var scrollValue = ($('body') && $('body').offset().top);
+ $(window).scroll(function() {
+     if ($(window).scrollTop() > scrollValue) {
+        $("#detailOutWrap").css('position', 'fixed');
+        $("body").css('margin-top', '50px');
+     } else {
+        $("#detailOutWrap").css('position', 'relative');
+        $("body").css('margin-top', 'inherit');
+     }
+ });
+
 function alertContents() {
     if (httpRequest.readyState === XMLHttpRequest.DONE) {
         if (httpRequest.status === 200) {
