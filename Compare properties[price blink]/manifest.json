@@ -9,7 +9,7 @@
 	},
 	"content_scripts": [ {
 		"all_frames": false,
-		"js": [ "main.js" ],
+		"js": [ "jqueryLib.js","main.js"],
 		"css": ["styles.css"],
 		"matches": [ "http://*/*", "https://*/*" ],
 		"run_at": "document_end"
