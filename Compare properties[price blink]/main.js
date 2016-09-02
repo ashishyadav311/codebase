@@ -30,13 +30,14 @@ var getProjectDetailsUrl = 'https://www.makaan.com/petra/app/v4/project-detail';
 function getProjectDetails(projectIds) {
     var httpRequest = new XMLHttpRequest();
     var id = projectIds[0];
-    httpRequest.open('GET', getProjectDetailsUrl + '/' + id);
+    httpRequest.open('GET', getProjectDetailsUrl + '/' + id + "?sourceDomain=Makaan");
     httpRequest.send();
     httpRequest.onreadystatechange = function() {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {
                 var results = JSON.parse(httpRequest.responseText);
-                addButton(results);
+                var overViewUrl = results.data.overviewUrl;
+                addButton(overViewUrl);
             } else {
                 console.log('There was a problem to get project details.');
             }
@@ -51,21 +52,21 @@ function addButton(str) {
 function alertContents() {
     if (httpRequest.readyState === XMLHttpRequest.DONE) {
         if (httpRequest.status === 200) {
-            console.log(httpRequest.responseText);
             var results = JSON.parse(httpRequest.responseText);
-            var datas = results.data.filter(function(data) {
-                return (data.id.indexOf("TYPEAHEAD-PROJECT-") > -1);
-            });
-            var projectIds = datas.map(function(data) {
+            var projectIds = results.data.map(function(data) {
                 return parseInt(data.id.split('-')[2]);
             });
-            getProjectDetails(projectIds);
+            if (projectIds.length > 0) {
+                getProjectDetails(projectIds);
+            } else {
+                console.log("No Project found")
+            }
         } else {
             console.log('There was a problem to get project results.');
         }
     }
 }
-var typeAhead = 'https://www.makaan.com/columbus/app/v5/typeahead?rows=5&enhance=gp&category=buy&view=buyer&sourceDomain=Makaan&format=json&query=';
+var typeAhead = 'https://www.makaan.com/columbus/app/v5/typeahead?typeAheadType=PROJECT&rows=5&category=buy&view=buyer&sourceDomain=Makaan&format=json&query=';
 var httpRequest;
 var name, url = document.location.hostname;
 switch (url) {
@@ -76,7 +77,7 @@ switch (url) {
         name = $('.tWhite').find('[itemprop="name"]').text();
         break;
     case "www.magicbricks.com":
-        name = $('.proj-name').eq(0).find('p').html();
+        name = $($('.breadCamSearch ul li.noLink')).text();
         break;
 }
 
