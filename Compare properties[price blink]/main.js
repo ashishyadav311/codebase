@@ -27,12 +27,12 @@ var DEBUG = false;
 var debug_info = {};
 var getProjectDetailsUrl = 'https://www.makaan.com/petra/app/v4/project-detail';
 
-function getProjectDetails(projectIds){
+function getProjectDetails(projectIds) {
     var httpRequest = new XMLHttpRequest();
-    var id  = projectIds[0];
+    var id = projectIds[0];
     httpRequest.open('GET', getProjectDetailsUrl + '/' + id);
     httpRequest.send();
-    httpRequest.onreadystatechange = function(){
+    httpRequest.onreadystatechange = function() {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {
                 var results = JSON.parse(httpRequest.responseText);
@@ -45,7 +45,7 @@ function getProjectDetails(projectIds){
 }
 
 function addButton(str) {
-    $('head').before('<div id="detailOutWrap"><div id="detailInWrap"><a target="_blank" href="http://compare.buyhatke.com" title="Visit Buyhatke"><img id="details_logo" src="http://compare.buyhatke.com/images/logo_small.png"></a><div id="details">Hurray !  Massive savings found. This product is available for <span id="detail_cost"><img src="http://compare.buyhatke.com/images/rupeeK.png">  </span> at <span id="detail_store"> </span><a style="display:inline!important;"  target="_blank"><input type="button" value=" BUY IT NOW" ></a>or<div class="drop_down" id="compare_now" onmouseover="cancel=true;">COMPARE PRICES<div class="drop_down_symbol"></div><div id="dd_menu"><head><div id="dd_menu_header">Showing <span> </span> results</div></head>' );
+    $('head').before('<div id="detailOutWrap"><div id="detailInWrap"><a target="_blank" href="http://compare.buyhatke.com" title="Visit Buyhatke"><img id="details_logo" src="http://compare.buyhatke.com/images/logo_small.png"></a><div id="details">Hurray !  Massive savings found. This product is available for <span id="detail_cost"><img src="http://compare.buyhatke.com/images/rupeeK.png">  </span> at <span id="detail_store"> </span><a style="display:inline!important;"  target="_blank"><input type="button" value=" BUY IT NOW" ></a>or<div class="drop_down" id="compare_now" onmouseover="cancel=true;">COMPARE PRICES<div class="drop_down_symbol"></div><div id="dd_menu"><head><div id="dd_menu_header">Showing <span> </span> results</div></head>');
 }
 
 function alertContents() {
@@ -53,10 +53,10 @@ function alertContents() {
         if (httpRequest.status === 200) {
             console.log(httpRequest.responseText);
             var results = JSON.parse(httpRequest.responseText);
-            var datas = results.data.filter(function(data){
-                return data.id.split('-').length == 3;
+            var datas = results.data.filter(function(data) {
+                return (data.id.indexOf("TYPEAHEAD-PROJECT-") > -1);
             });
-            var projectIds = datas.map(function(data){
+            var projectIds = datas.map(function(data) {
                 return parseInt(data.id.split('-')[2]);
             });
             getProjectDetails(projectIds);
@@ -66,8 +66,19 @@ function alertContents() {
     }
 }
 var typeAhead = 'https://www.makaan.com/columbus/app/v5/typeahead?rows=5&enhance=gp&category=buy&view=buyer&sourceDomain=Makaan&format=json&query=';
-var name = $('.proj-name').eq(0).find('p').html();
 var httpRequest;
+var name, url = document.location.hostname;
+switch (url) {
+    case "www.commonfloor.com":
+        name = $('.proj-name').eq(0).find('p').html();
+        break;
+    case "www.99acre.com":
+        name = $('.proj-name').eq(0).find('p').html();
+        break;
+    case "www.magicbricks.com":
+        name = $('.proj-name').eq(0).find('p').html();
+        break;
+}
 
 if (name) {
     httpRequest = new XMLHttpRequest();
