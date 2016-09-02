@@ -30,6 +30,8 @@ function alertContents() {
     if (httpRequest.readyState === XMLHttpRequest.DONE) {
         if (httpRequest.status === 200) {
             alert(httpRequest.responseText);
+            var results = JSON.parse(httpRequest.responseText);
+            var projectId = parseInt(results.id.split('-')[2])
         } else {
             alert('There was a problem with the request.');
         }
