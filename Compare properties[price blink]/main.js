@@ -46,7 +46,7 @@ function getProjectDetails(projectIds) {
 }
 
 function addButton(str) {
-    $('head').before('<div id="detailOutWrap"><div id="detailInWrap"><a class="logo" target="_blank" href="https://www.makaan.com" title="makaan"><img id="details_logo" src="http://s3-ap-southeast-1.amazonaws.com/propguide-prod/wp-content/uploads/2016/09/logo_64x64.png"></a><div class="content-wrap"><div id="details"><span class="txt-heading">Hurray !  Massive deals found. find better deals at <a href="www.makaan.com" title="makaan.com">makaan.com</a> </span></div><div class="visitHere"> To find better Deals <a class="linkToCompare" target="_blank" href="https://www.makaan.com/'+str +'">click here</a></div> </div></div></div>');
+    $('head').before('<div id="detailOutWrap"><div id="detailInWrap"><a class="logo" target="_blank" href="https://www.makaan.com" title="makaan"><img id="details_logo" src="http://s3-ap-southeast-1.amazonaws.com/propguide-prod/wp-content/uploads/2016/09/logo_64x64.png"></a><div class="content-wrap"><div id="details"><span class="txt-heading">Hurray !  Massive deals found. find better deals at <a href="https://www.makaan.com" title="makaan.com">makaan.com</a> </span></div><div class="visitHere"> To find better Deals <a class="linkToCompare" target="_blank" href="https://www.makaan.com/'+str +'">click here</a></div> </div></div></div>');
 }
 
 function alertContents() {
