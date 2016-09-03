@@ -26,7 +26,6 @@ var coupon_code_exception_rids = [];
 var DEBUG = false;
 var debug_info = {};
 var getProjectDetailsUrl = 'https://www.makaan.com/petra/app/v4/project-detail';
-// var getSimilarProjectsUrl = 'https://www.makaan.com/petra/data/v2/recommendation?type=similar&projectId=642535&selector={"fields":["title","builder","activeStatus","projectId","URL","buyUrl","rentUrl","imageURL","altText","mainImage","minPrice","maxPrice","minResaleOrPrimaryPrice","maxResaleOrPrimaryPrice","id","city","suburb","label","name","type","user","contactNumbers","locality","contactNumber","sellerId","listingCategory","property","currentListingPrice","price","bedrooms","bathrooms","size","unitTypeId","project","projectId","studyRoom","servantRoom","poojaRoom","companySeller","company","companyScore","listingAggregations"],"paging":{"start":0,"rows":10}}&sourceDomain=Makaan';
 
 function getProjectDetails(projectIds) {
     var httpRequest = new XMLHttpRequest();
@@ -93,7 +92,6 @@ function alertContents() {
             });
             if (projectIds.length > 0) {
                 getProjectDetails(projectIds);
-                getSimilarProjects(projectIds);
             } else {
                 console.log("No Project found")
             }
@@ -116,6 +114,7 @@ switch (url) {
         name = $('.breadCamSearch ul li.noLink').text().trim();
         break;
     case "www.housing.com":
+    case "housing.com":
         name = $('.property-info h1[itemprop="name"]').text();
         break;
     case "www.indiaproperty.com":
