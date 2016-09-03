@@ -110,9 +110,32 @@ function getProjectDetails(projectIds, data) {
 function bindEvents(renderObj) {
     $('.js-platform-sel').each(function(idx) {
         $(this).on("click", function() {
+
             var getsvalue = $(this).text();
             $('.labelDD').html(getsvalue);
             $('.dropdown-wrap ul').css('display', 'none')
+                // get project page and builder page for this site
+            var selectedSite = $(this).attr("data-sel");
+            if (selectedSite === "housing") {
+                var suggestionAPIUrl = 'https://buy.housing.com/api/v0/search/suggest/?source=web&string=' + name.replace(" ", "+");
+                httpRequest.open('GET', suggestionAPIUrl);
+                httpRequest.send();
+                httpRequest.onreadystatechange = function() {
+                    if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                        if (httpRequest.status === 200) {
+                            var results = JSON.parse(httpRequest.responseText);
+                            results.forEach(function(arrItem) {
+                                if (arrItem.type === "project") {
+                                    var _projectOverviewUrl = 'https://housing.com/in/buy/projects/page/' + arrItem.uuid;
+                                    $('.js-project-detail-url a').attr("href", _projectOverviewUrl);
+                                }
+                            });
+                        } else {
+                            console.log('error in fetching housing project url');
+                        }
+                    }
+                }
+            }
         });
     })
     $('.dropdown-wrap .labelDD').on('click', function() {
@@ -156,15 +179,14 @@ function renderExtension(renderObj) {
         builderDetail = '<div class="visitHere builderInfo"> <a class="builderCompare" target="_blank" href="https://www.makaan.com/' + renderObj.builderOverviewUrl + '">about ' + renderObj.builderName + ' Details</a></div>';
     }
     midSec += '<div class="leadForm"><span>Do you have a query? </span> You can contact us <input placeholder="email" type="email" id="leadID" class="lead-input" /> <input placeholder="contact" type="tel" id="contact" class="contact" /> <button class="btnv2 btnv2-p leadSubmit"> Submit </button> </div>';
-    var dropdownList = '<div class="dropdown-wrap"><div class="labelDD">Choose your preferred platform:</div><ul style="display:none"><li class="js-platform-sel">Makaan</li><li class="js-platform-sel">Housing</li><li class="js-platform-sel">99acres</li><li class="js-platform-sel">Common Floor</li><li class="js-platform-sel">India Property</li></ul></div>';
-    var botWrap = '<div class="bottom-wrap"> <div class="last-updated-wrap"> Get latest projects details here </div> <div class="builder-details-wrap">' + builderDetail + '</div> ' + dropdownList + ' </div>';
+    var dropdownList = '<div class="dropdown-wrap"><div class="labelDD">Choose your preferred platform:</div><ul style="display:none"><li data-sel="makaan" class="js-platform-sel">Makaan</li><li data-sel="housing" class="js-platform-sel">Housing</li><li data-sel="99acres" class="js-platform-sel">99acres</li><li data-sel="commonfloor" class="js-platform-sel">Common Floor</li><li data-sel="indiaproperty" class="js-platform-sel">India Property</li></ul></div>';
+    var botWrap = '<div class="bottom-wrap"> <div class="last-updated-wrap"> Get latest projects details <span class="js-project-detail-url"><a target="_blank" href="">here</a></span> </div> <div class="builder-details-wrap">' + builderDetail + '</div> ' + dropdownList + ' </div>';
     midSec += '</div></div></div>';
     var botSec = '';
     var finalStr = midSec + botWrap + botSec;
     $('head').before(finalStr);
     bindEvents(renderObj);
 }
-
 
 function getProjectDataCommonFloor() {
     var project_id = window.location.pathname.split('-')[window.location.pathname.split('-').length - 1]
