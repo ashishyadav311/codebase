@@ -26,7 +26,6 @@ var coupon_code_exception_rids = [];
 var DEBUG = false;
 var debug_info = {};
 var getProjectDetailsUrl = 'https://www.makaan.com/petra/app/v4/project-detail';
-// var getSimilarProjectsUrl = 'https://www.makaan.com/petra/data/v2/recommendation?type=similar&projectId=642535&selector={"fields":["title","builder","activeStatus","projectId","URL","buyUrl","rentUrl","imageURL","altText","mainImage","minPrice","maxPrice","minResaleOrPrimaryPrice","maxResaleOrPrimaryPrice","id","city","suburb","label","name","type","user","contactNumbers","locality","contactNumber","sellerId","listingCategory","property","currentListingPrice","price","bedrooms","bathrooms","size","unitTypeId","project","projectId","studyRoom","servantRoom","poojaRoom","companySeller","company","companyScore","listingAggregations"],"paging":{"start":0,"rows":10}}&sourceDomain=Makaan';
 
 var helperFunction = {
     getFormetedPrice : function(price){
@@ -113,12 +112,13 @@ function getProjectDetails(projectIds, data) {
 
 function renderExtension(renderObj) {
     //access renderObj.minPrice and renderObj.maxPrice if exist renderObj.currentPageMinPrice renderObj.currentPageMaxPrice
-    var str = '<div id="detailOutWrap"><div id="detailInWrap"><a class="logo" target="_blank" href="https://www.makaan.com" title="makaan"><img id="details_logo" src="http://s3-ap-southeast-1.amazonaws.com/propguide-prod/wp-content/uploads/2016/09/logo_64x64.png"></a><div class="content-wrap"><div id="details"><span class="txt-heading">Hurray !  Massive deals found. find better deals at <a href="www.makaan.com" title="makaan.com">makaan.com</a> </span></div>';
+     
+    var str = '<div id="detailOutWrap"><div id="detailInWrap"><a class="logo" target="_blank" href="https://www.makaan.com" title="makaan"><img id="details_logo" src="http://s3-ap-southeast-1.amazonaws.com/propguide-prod/wp-content/uploads/2016/09/logo_64x64.png"></a><div class="content-wrap"><div id="details"><span class="txt-heading">Hurray !  Massive deals found. find better deals at <a href="https://www.makaan.com" title="makaan.com">makaan.com</a> </span></div>';
     if (renderObj && renderObj.projectOverviewUrl) {
         str += '<div class="visitHere"> To find better Deals <a class="linkToCompare" target="_blank" href="https://www.makaan.com/'+ renderObj.projectOverviewUrl +'">click here</a></div>';
     }
     if(renderObj.builderOverviewUrl){
-        str += '<div class="visitHere"> To find ' + renderObj.builderName + ' Details <a class="linkToCompare" target="_blank" href="https://www.makaan.com/'+ renderObj.builderOverviewUrl +'">click here</a></div>';
+        str += '<div class="visitHere builderInfo"> about ' + renderObj.builderName + ' Details <a class="builderCompare" target="_blank" href="https://www.makaan.com/'+ renderObj.builderOverviewUrl +'">click here</a></div>';
     }
     
     str += '</div></div></div>';
@@ -150,6 +150,24 @@ function getProjectDataCommonFloor(){
             promise.abort = request.abort;
             return promise;
 }
+
+var scrollValue = ($('body') && $('body').offset().top);
+ $(window).scroll(function() {
+     if ($(window).scrollTop() > scrollValue && window.location.hostname != 'www.makaan.com') {
+        $("#detailOutWrap").css('position', 'fixed');
+        $("body").css('margin-top', '50px');
+     } else {
+        $("#detailOutWrap").css('position', 'relative');
+        $("body").css('margin-top', 'inherit');
+     }
+ });
+
+
+function queryAboutProject () {
+    var str = '<div class="haveWueriesWrap">have queries about </div>';
+}
+
+
 function alertContents() {
     if (httpRequest.readyState === XMLHttpRequest.DONE) {
         if (httpRequest.status === 200) {
@@ -158,6 +176,7 @@ function alertContents() {
                 return parseInt(data.id.split('-')[2]);
             });
             if (projectIds.length > 0) {
+ 
                 if(url == 'www.commonfloor.com'){
                     getProjectDataCommonFloor().then(function(response){
                         response = JSON.parse(response);
@@ -172,12 +191,9 @@ function alertContents() {
                     });
                     
                 } 
-                if(url == 'www.magicbricks.com'){
-                    var minPrice;
-                    var maxPrice;
-                    var data = {};
-                    getProjectDetails(projectIds, data);
-                }
+                var data = {};
+                getProjectDetails(projectIds, data);
+ 
             } else {
                 console.log("No Project found")
             }
@@ -200,6 +216,7 @@ switch (url) {
         name = $('.breadCamSearch ul li.noLink').text().trim();
         break;
     case "www.housing.com":
+    case "housing.com":
         name = $('.property-info h1[itemprop="name"]').text();
         break;
     case "www.indiaproperty.com":

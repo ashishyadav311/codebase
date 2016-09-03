@@ -129,7 +129,7 @@
 }
 
 #detailOutWrap{
-	position: fixed;
+	position: relative;
 	top: 0;
 	left: 0;
 	width: 100%;
@@ -196,6 +196,24 @@
     color: #e81c28;
     text-decoration: underline;
 }
+
+.visitHere.builderInfo{
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 999;
+    font-family: "comfortaalight";
+}
+.visitHere.builderInfo a{
+    cursor: pointer;
+}
+
+.visitHere.builderInfo a:hover{
+    color: #e81c28;
+}
+
+
+
 
 
 
