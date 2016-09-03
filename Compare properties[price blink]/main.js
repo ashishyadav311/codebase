@@ -43,6 +43,7 @@ function getProjectDetails(projectIds) {
                     renderObj.builderName = results.data.builder.name;
                 }
                 renderExtension(renderObj);
+                bindEvents();
             } else {
                 console.log('There was a problem to get project details.');
             }
@@ -50,16 +51,29 @@ function getProjectDetails(projectIds) {
     }
 }
 
+function bindEvents(){
+    $('.js-platform-sel').each(function(idx){
+        $(this).on("click", function(){
+            console.log($(this).text(), 'clicked');
+            // get project page and builder page for this site
+        });
+    })
+}
+
 function renderExtension(renderObj) {
-    var str = '<div id="detailOutWrap"><div id="detailInWrap"><a class="logo" target="_blank" href="https://www.makaan.com" title="makaan"><img id="details_logo" src="http://s3-ap-southeast-1.amazonaws.com/propguide-prod/wp-content/uploads/2016/09/logo_64x64.png"></a><div class="content-wrap"><div id="details"><span class="txt-heading">Hurray !  Massive deals found. find better deals at <a href="https://www.makaan.com" title="makaan.com">makaan.com</a> </span></div>';
+    var topSec = '<div><span>Choose your preferred platform:</span></div>';
+    topSec += '<ul><li class="js-platform-sel">Makaan</li><li class="js-platform-sel">Housing</li><li class="js-platform-sel">99acres</li><li class="js-platform-sel">Common Floor</li><li class="js-platform-sel">India Property</li></ul>';
+    var midSec = '<div id="detailOutWrap"><div id="detailInWrap"><a class="logo" target="_blank" href="https://www.makaan.com" title="makaan"><img id="details_logo" src="http://s3-ap-southeast-1.amazonaws.com/propguide-prod/wp-content/uploads/2016/09/logo_64x64.png"></a><div class="content-wrap"><div id="details"><span class="txt-heading">Hurray !  Massive deals found. find better deals at <a href="https://www.makaan.com" title="makaan.com">makaan.com</a> </span></div>';
     if (renderObj && renderObj.projectOverviewUrl) {
-        str += '<div class="visitHere"> To find better Deals <a class="linkToCompare" target="_blank" href="https://www.makaan.com/'+ renderObj.projectOverviewUrl +'">click here</a></div>';
+        midSec += '<div class="visitHere"> To find better Deals <a class="linkToCompare" target="_blank" href="https://www.makaan.com/'+ renderObj.projectOverviewUrl +'">click here</a></div>';
     }
     if(renderObj.builderOverviewUrl){
-        str += '<div class="visitHere builderInfo"> about ' + renderObj.builderName + ' Details <a class="builderCompare" target="_blank" href="https://www.makaan.com/'+ renderObj.builderOverviewUrl +'">click here</a></div>';
+        midSec += '<div class="visitHere builderInfo"> about ' + renderObj.builderName + ' Details <a class="builderCompare" target="_blank" href="https://www.makaan.com/'+ renderObj.builderOverviewUrl +'">click here</a></div>';
     }
-    str += '</div></div></div>';
-    $('head').before(str);
+    midSec += '</div></div></div>';
+    var botSec = '';
+    var finalStr = topSec + midSec + botSec;
+    $('head').before(finalStr);
 }
 
 var scrollValue = ($('body') && $('body').offset().top);
