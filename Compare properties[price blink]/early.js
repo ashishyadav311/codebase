@@ -28,5 +28,3 @@ function _loadFonts(){
   }
   head.appendChild(style);
 }
-
-$('.dropdown-wrap ul').css('display', 'none');
