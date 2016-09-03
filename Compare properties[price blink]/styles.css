@@ -68,7 +68,6 @@
   border-left-color: #d41621;
 }
 
-
 #detailOutWrap *, .bottom-wrap *{
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
@@ -99,98 +98,6 @@
 	font-family: Arial;
 	font-size: 12px;
 	font-weight: bold;
-}
-
-#priceblink-products-message {
-	color: #000000;
-}
-
-#priceblink-coupons-message {
-	color: #FFFFFF;
-}
-
-#priceblink-preferred-coupons-message {
-  color: #000000 !important;
-}
-
-.priceblink-yellow {
-	background-image: url(http://www.priceblink.com/images/chrome/bg_yellow.png);
-	color: #000000;
-}
-
-.priceblink-grey {
-	background-image: url(http://www.priceblink.com/images/chrome/bg_grey.png);
-	color: #FFFFFF;
-}
-
-#priceblink-notification-bar img {
-	border: none;
-	vertical-align: middle;
-	display: inline;
-}
-
-#priceblink-left {
-	padding: 0;
-	line-height: 32px;
-	float: left;
-}
-
-#priceblink-right {
-	padding: 0;
-	line-height: 32px;
-	margin-right: 10px;
-	float: right;
-}
-
-#priceblink-products-select {
-	width: 120px;
-	margin-right: 10px;
-}
-
-#priceblink-reviews-select {
-	width: 110px;
-}
-
-#priceblink-coupons-select {
-	width: 115px;
-}
-
-#priceblink-products-select, 
-#priceblink-reviews-select,
-#priceblink-coupons-select {
-	font-size: 12px;
-	margin-top: 6px;
-	font-weight: normal;
-}
-
-.priceblink-select-reset {
-	vertical-align: top;
-	padding: 0;
-	margin: 0;
-	border: hidden;
-	font-family: Arial;
-	font-size: 12px;
-	color: #000000;
-	border: 1px solid #FFFFFF;
-	height: 19px;
-	background-image: none;
-	background-color: #FFFFFF;
-	display: inline;
-}
-
-#priceblink-close-button {
-	margin-top: 10px;
-	margin-left: 5px;
-	float: right;
-}
-
-#priceblink-wishlist-button {
-  border: none;
-	vertical-align: top;
-	margin-top: 6px;
-	display: inline;
-	padding: 0;
-	background-color: transparent;
 }
 
 #detailOutWrap{
