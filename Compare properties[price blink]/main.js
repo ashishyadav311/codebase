@@ -84,6 +84,7 @@ function getProjectDetails(projectIds, data) {
                 }
                 renderObj.minPrice = helperFunction.getFormetedPriceString(results.data.minPrice);
                 renderObj.maxPrice = helperFunction.getFormetedPriceString(results.data.maxPrice);
+                renderObj.name = name;
                 if (url != 'www.commonfloor.com') {
                     //give no price
                     renderExtension(renderObj);
@@ -174,9 +175,9 @@ function renderExtension(renderObj) {
     var builderDetail = '';
     var betterDeals = '';
     //access renderObj.minPrice and renderObj.maxPrice if exist renderObj.currentPageMinPrice renderObj.currentPageMaxPrice
-    var midSec = '<div id="detailOutWrap"><div id="detailInWrap"><a class="logo" target="_blank" href="https://www.makaan.com" title="makaan"><img id="details_logo" src="http://s3-ap-southeast-1.amazonaws.com/propguide-prod/wp-content/uploads/2016/09/logo_64x64.png"></a><div class="content-wrap"><div id="details"><span class="txt-heading">Hurray !  Massive deals found. find better deals at <a href="https://www.makaan.com" title="makaan.com">makaan.com</a> </span></div>';
+    var midSec = '<div id="detailOutWrap"><div id="detailInWrap"><a class="logo" target="_blank" href="https://www.makaan.com" title="makaan"><img id="details_logo" src="http://s3-ap-southeast-1.amazonaws.com/propguide-prod/wp-content/uploads/2016/09/logo_64x64.png"></a><div class="content-wrap"><div id="details"><span class="txt-heading"></span></div>';
     if (renderObj && renderObj.projectOverviewUrl) {
-        betterDeals = '<div class="visitHere"> <img src="http://s3-ap-southeast-1.amazonaws.com/propguide-prod/wp-content/uploads/2016/09/malls.png" /> Get latest Details <span class="js-project-detail-url"><a class="linkToCompare" target="_blank" href="https://www.makaan.com/' + renderObj.projectOverviewUrl + '">click here</a></span></div>';
+        betterDeals = '<div class="visitHere"> <img src="http://s3-ap-southeast-1.amazonaws.com/propguide-prod/wp-content/uploads/2016/09/malls.png" /> Get latest Project Details <span class="js-project-detail-url"><a class="linkToCompare" target="_blank" href="https://www.makaan.com/' + renderObj.projectOverviewUrl + '">click here</a></span></div>';
     }
     if (renderObj.builderOverviewUrl) {
         builderDetail = '<div class="visitHere builderInfo"><img src="http://s3-ap-southeast-1.amazonaws.com/propguide-prod/wp-content/uploads/2016/09/list.png" /> <a class="builderCompare" target="_blank" href="https://www.makaan.com/' + renderObj.builderOverviewUrl + '">about ' + renderObj.builderName + ' Details</a></div>';

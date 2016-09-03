@@ -123,10 +123,11 @@
 }
 
 #detailOutWrap #details{
-    display: inline-block;
+    display: none;
     vertical-align: middle;
     width: 22%;
 }
+
 
 #detailOutWrap .content-wrap{
     margin-left: 15px;
@@ -221,7 +222,7 @@
     text-align: center;
     display: inline-block;
     vertical-align: middle;
-    width: 78%;
+    width: 100%;
 }
 
 .leadForm input{
