@@ -26,9 +26,37 @@ var coupon_code_exception_rids = [];
 var DEBUG = false;
 var debug_info = {};
 var getProjectDetailsUrl = 'https://www.makaan.com/petra/app/v4/project-detail';
-// var getSimilarProjectsUrl = 'https://www.makaan.com/petra/data/v2/recommendation?type=similar&projectId=642535&selector={"fields":["title","builder","activeStatus","projectId","URL","buyUrl","rentUrl","imageURL","altText","mainImage","minPrice","maxPrice","minResaleOrPrimaryPrice","maxResaleOrPrimaryPrice","id","city","suburb","label","name","type","user","contactNumbers","locality","contactNumber","sellerId","listingCategory","property","currentListingPrice","price","bedrooms","bathrooms","size","unitTypeId","project","projectId","studyRoom","servantRoom","poojaRoom","companySeller","company","companyScore","listingAggregations"],"paging":{"start":0,"rows":10}}&sourceDomain=Makaan';
 
-function getProjectDetails(projectIds) {
+var helperFunction = {
+    getFormetedPrice : function(price){
+        if(price.indexOf('C')){
+            return parseFloat(price.split('C')[0]) * 10000000;
+        }
+        if(price.indexOf('L')){
+            return parseFloat(price.split('L')[0]) * 100000;   
+        }
+        if(price.indexOf('T')){
+            return parseFloat(price.split('T')[0]) * 1000;   
+        }
+        return 0;
+    },
+    getFormetedPriceString : function(price){
+        var cr = 10000000;
+        var l = 100000;
+        var t = 1000;
+        if(price >= cr){
+            return (price / cr).toPrecision(2) + 'Cr';
+        }
+        else if(price >= l){
+            return (price / l).toPrecision(2)+ 'lakhs';
+        }else if(price >= t){
+            return (price / t).toPrecision(2)+ 'thousands';
+        }
+    }
+
+}
+
+function getProjectDetails(projectIds, data) {
     var httpRequest = new XMLHttpRequest();
     var id = projectIds[0];
     httpRequest.open('GET', getProjectDetailsUrl + '/' + id + "?sourceDomain=Makaan");
@@ -37,13 +65,44 @@ function getProjectDetails(projectIds) {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {
                 var results = JSON.parse(httpRequest.responseText);
+
                 var renderObj = {};
                 renderObj.projectOverviewUrl = results.data.overviewUrl;
                 if (results.data && results.data.builder && results.data.builder.url) {
                     renderObj.builderOverviewUrl = results.data.builder.url;
                     renderObj.builderName = results.data.builder.name;
                 }
-                renderExtension(renderObj);
+
+                var makaanProjectPrice = results.data.minPrice + results.data.maxPrice / 2;
+                var overViewUrl = results.data.overviewUrl;
+                var price;
+                if(!data.minPrice && !data.maxPrice){
+                    price = null;
+                }else{
+                    renderObj.currentPageMinPrice = data.minPrice;
+                    renderObj.currentPageMaxPrice = data.maxPrice;
+                    price = (helperFunction.getFormetedPrice(data.minPrice) + helperFunction.getFormetedPrice(data.maxPrice)) / 2;
+                }
+                renderObj.minPrice = helperFunction.getFormetedPriceString(results.data.minPrice);
+                renderObj.maxPrice = helperFunction.getFormetedPriceString(results.data.maxPrice);
+                if(url != 'www.commonfloor.com'){
+                    //give no price
+                    renderExtension(renderObj);
+                    // addButton(overViewUrl);
+                    return;
+                }
+                if(!price){
+                    //give minPrice and maxPrice price
+                    renderExtension(renderObj);
+                    // addButton(overViewUrl);
+                    return;
+                }
+                if(price && price <= makaanProjectPrice){
+                    renderExtension(renderObj);
+                    return;
+                }   
+
+                
             } else {
                 console.log('There was a problem to get project details.');
             }
@@ -52,16 +111,62 @@ function getProjectDetails(projectIds) {
 }
 
 function renderExtension(renderObj) {
-    var str = '<div id="detailOutWrap"><div id="detailInWrap"><a class="logo" target="_blank" href="https://www.makaan.com" title="makaan"><img id="details_logo" src="http://s3-ap-southeast-1.amazonaws.com/propguide-prod/wp-content/uploads/2016/09/logo_64x64.png"></a><div class="content-wrap"><div id="details"><span class="txt-heading">Hurray !  Massive deals found. find better deals at <a href="www.makaan.com" title="makaan.com">makaan.com</a> </span></div>';
+    //access renderObj.minPrice and renderObj.maxPrice if exist renderObj.currentPageMinPrice renderObj.currentPageMaxPrice
+     
+    var str = '<div id="detailOutWrap"><div id="detailInWrap"><a class="logo" target="_blank" href="https://www.makaan.com" title="makaan"><img id="details_logo" src="http://s3-ap-southeast-1.amazonaws.com/propguide-prod/wp-content/uploads/2016/09/logo_64x64.png"></a><div class="content-wrap"><div id="details"><span class="txt-heading">Hurray !  Massive deals found. find better deals at <a href="https://www.makaan.com" title="makaan.com">makaan.com</a> </span></div>';
     if (renderObj && renderObj.projectOverviewUrl) {
         str += '<div class="visitHere"> To find better Deals <a class="linkToCompare" target="_blank" href="https://www.makaan.com/'+ renderObj.projectOverviewUrl +'">click here</a></div>';
     }
     if(renderObj.builderOverviewUrl){
-        str += '<div class="visitHere"> To find ' + renderObj.builderName + ' Details <a class="linkToCompare" target="_blank" href="https://www.makaan.com/'+ renderObj.builderOverviewUrl +'">click here</a></div>';
+        str += '<div class="visitHere builderInfo"> about ' + renderObj.builderName + ' Details <a class="builderCompare" target="_blank" href="https://www.makaan.com/'+ renderObj.builderOverviewUrl +'">click here</a></div>';
     }
+    
     str += '</div></div></div>';
     $('head').before(str);
 }
+
+function getProjectDataCommonFloor(){
+        var httpRequest = new XMLHttpRequest();
+        var project_id = location.pathname.split('/')[2].split('-')[1];
+        httpRequest.open('GET', 'https://www.commonfloor.com/properties/listing/get-listings-for-project/?project_id=' + project_id);
+        httpRequest.send();
+        var url = 'https://www.commonfloor.com/properties/listing/get-listings-for-project/?project_id=' + project_id;
+        var options = {
+                method: 'GET',
+                url: url
+        };
+        var request = $.ajax(options);
+        var promise = request
+                .then(function(response) {
+                    return response;
+                }, function(error) {
+                    // TODO Need to send info via isCustomError
+                    return error;
+                    (function(error, isCustomError) {
+                        return errorHandler(error, isCustomError);
+                    })(error, isCustomError)
+                })
+                .always(function() {});
+            promise.abort = request.abort;
+            return promise;
+}
+
+var scrollValue = ($('body') && $('body').offset().top);
+ $(window).scroll(function() {
+     if ($(window).scrollTop() > scrollValue && window.location.hostname != 'www.makaan.com') {
+        $("#detailOutWrap").css('position', 'fixed');
+        $("body").css('margin-top', '50px');
+     } else {
+        $("#detailOutWrap").css('position', 'relative');
+        $("body").css('margin-top', 'inherit');
+     }
+ });
+
+
+function queryAboutProject () {
+    var str = '<div class="haveWueriesWrap">have queries about </div>';
+}
+
 
 function alertContents() {
     if (httpRequest.readyState === XMLHttpRequest.DONE) {
@@ -71,8 +176,24 @@ function alertContents() {
                 return parseInt(data.id.split('-')[2]);
             });
             if (projectIds.length > 0) {
-                getProjectDetails(projectIds);
-                getSimilarProjects(projectIds);
+ 
+                if(url == 'www.commonfloor.com'){
+                    getProjectDataCommonFloor().then(function(response){
+                        response = JSON.parse(response);
+                        var minPrice = response.data.results[0].price;
+                        var maxPrice = response.data.results[response.data.results.length-1].price;
+                        var data = {};
+                        data.minPrice = minPrice;
+                        data.maxPrice = maxPrice;
+                        getProjectDetails(projectIds, data);
+                    }, function(error){
+                        console.log('some error occured in fetching price');
+                    });
+                    
+                } 
+                var data = {};
+                getProjectDetails(projectIds, data);
+ 
             } else {
                 console.log("No Project found")
             }
@@ -95,6 +216,7 @@ switch (url) {
         name = $('.breadCamSearch ul li.noLink').text().trim();
         break;
     case "www.housing.com":
+    case "housing.com":
         name = $('.property-info h1[itemprop="name"]').text();
         break;
     case "www.indiaproperty.com":
