@@ -40,7 +40,21 @@ var helperFunction = {
             return parseFloat(price.split('T')[0]) * 1000;   
         }
         return 0;
+    },
+    getFormetedPriceString : function(price){
+        var cr = 10000000;
+        var l = 100000;
+        var t = 1000;
+        if(price >= cr){
+            return (price / cr).toPrecision(2) + 'Cr';
+        }
+        else if(price >= l){
+            return (price / l).toPrecision(2)+ 'lakhs';
+        }else if(price >= t){
+            return (price / t).toPrecision(2)+ 'thousands';
+        }
     }
+
 }
 
 function getProjectDetails(projectIds, data) {
@@ -60,18 +74,18 @@ function getProjectDetails(projectIds, data) {
                     renderObj.builderName = results.data.builder.name;
                 }
 
-
-
                 var makaanProjectPrice = results.data.minPrice + results.data.maxPrice / 2;
                 var overViewUrl = results.data.overviewUrl;
                 var price;
                 if(!data.minPrice && !data.maxPrice){
                     price = null;
                 }else{
+                    renderObj.currentPageMinPrice = data.minPrice;
+                    renderObj.currentPageMaxPrice = data.maxPrice;
                     price = (helperFunction.getFormetedPrice(data.minPrice) + helperFunction.getFormetedPrice(data.maxPrice)) / 2;
                 }
-                renderObj.minPrice =  results.data.minPrice;
-                renderObj.maxPrice = results.data.maxPrice;
+                renderObj.minPrice = helperFunction.getFormetedPriceString(results.data.minPrice);
+                renderObj.maxPrice = helperFunction.getFormetedPriceString(results.data.maxPrice);
                 if(url != 'www.commonfloor.com'){
                     //give no price
                     renderExtension(renderObj);
@@ -84,12 +98,11 @@ function getProjectDetails(projectIds, data) {
                     // addButton(overViewUrl);
                     return;
                 }
-                if(price && price <= makaanProjectPrice)
-                    //give minPrice and maxPrice price
-                    // addButton(overViewUrl);
+                if(price && price <= makaanProjectPrice){
                     renderExtension(renderObj);
-
                     return;
+                }   
+
                 
             } else {
                 console.log('There was a problem to get project details.');
@@ -99,7 +112,7 @@ function getProjectDetails(projectIds, data) {
 }
 
 function renderExtension(renderObj) {
-    //access renderObj.minPrice and renderObj.maxPrice
+    //access renderObj.minPrice and renderObj.maxPrice if exist renderObj.currentPageMinPrice renderObj.currentPageMaxPrice
     var str = '<div id="detailOutWrap"><div id="detailInWrap"><a class="logo" target="_blank" href="https://www.makaan.com" title="makaan"><img id="details_logo" src="http://s3-ap-southeast-1.amazonaws.com/propguide-prod/wp-content/uploads/2016/09/logo_64x64.png"></a><div class="content-wrap"><div id="details"><span class="txt-heading">Hurray !  Massive deals found. find better deals at <a href="www.makaan.com" title="makaan.com">makaan.com</a> </span></div>';
     if (renderObj && renderObj.projectOverviewUrl) {
         str += '<div class="visitHere"> To find better Deals <a class="linkToCompare" target="_blank" href="https://www.makaan.com/'+ renderObj.projectOverviewUrl +'">click here</a></div>';
