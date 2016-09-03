@@ -164,6 +164,7 @@ function renderExtension(renderObj) {
 
 
 function getProjectDataCommonFloor() {
+    var project_id = window.location.pathname.split('-')[window.location.pathname.split('-').length - 1]
     var url = 'https://www.commonfloor.com/properties/listing/get-listings-for-project/?project_id=' + project_id;
     var options = {
         method: 'GET',
