@@ -109,6 +109,7 @@ switch (url) {
         name = $('.breadCamSearch ul li.noLink').text().trim();
         break;
     case "www.housing.com":
+    case "housing.com":
         name = $('.property-info h1[itemprop="name"]').text();
         break;
     case "www.indiaproperty.com":
