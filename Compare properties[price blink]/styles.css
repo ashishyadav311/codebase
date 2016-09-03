@@ -301,9 +301,17 @@
     text-decoration: none;
 }
 
+#successPosted .successPost{
+    color: #4f9a0d;
+    font-size: 14px;
+    font-family: 'comfortaalight';
+}
 
-
-
+#ErrorInpost .errorPost{
+    color: #e81c28;
+    font-size: 14px;
+    font-family: 'comfortaalight';
+}
 
 
 

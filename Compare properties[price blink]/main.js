@@ -161,8 +161,10 @@ function bindEvents(renderObj) {
         data.pageUrl = window.location.pathname;
         data.jsonDump = window.navigator.userAgent;
         leadSubmit(JSON.stringify(data)).then(function(response) {
+            $("#successPosted").html("<div class='successPost'>You have successfully posted. Our agents will shortly contact you.</div>");
             console.log('successfully posted lead')
         }, function(error) {
+            $("#ErrorInpost").html("<div class='errorPost'>We are unable to process your query right now. Please try again later...</div>");
             console.log('error in posted lead');
         });
     })
@@ -179,7 +181,7 @@ function renderExtension(renderObj) {
     if (renderObj.builderOverviewUrl) {
         builderDetail = '<div class="visitHere builderInfo"><img src="http://s3-ap-southeast-1.amazonaws.com/propguide-prod/wp-content/uploads/2016/09/list.png" /> <a class="builderCompare" target="_blank" href="https://www.makaan.com/' + renderObj.builderOverviewUrl + '">about ' + renderObj.builderName + ' Details</a></div>';
     }
-    midSec += '<div class="leadForm"><span>Do you have a query? </span> You can contact us <input placeholder="email" type="email" id="leadID" class="lead-input" /> <input placeholder="mobile" type="tel" id="contact" class="contact" /> <button class="btnv2 btnv2-p leadSubmit"> Submit </button> </div>';
+    midSec += '<div class="leadForm"><span>Do you have a query? </span> You can contact us <input placeholder="email" type="email" id="leadID" class="lead-input" /> <input placeholder="mobile" type="tel" id="contact" class="contact" /> <button class="btnv2 btnv2-p leadSubmit"> Submit </button> <div id="successPosted"></div> <div id="ErrorInpost"></div> </div>';
 
     var dropdownList = '<div class="dropdown-wrap"><img src="http://s3-ap-southeast-1.amazonaws.com/propguide-prod/wp-content/uploads/2016/09/builder.png" /><div class="labelDD">Choose your preferred platform:</div><ul style="display:none"><li data-sel="makaan" class="js-platform-sel">Makaan</li><li data-sel="housing" class="js-platform-sel">Housing</li><li data-sel="99acres" class="js-platform-sel">99acres</li><li data-sel="commonfloor" class="js-platform-sel">Common Floor</li><li data-sel="indiaproperty" class="js-platform-sel">India Property</li></ul></div>';
     var botWrap = '<div class="bottom-wrap"> <div class="last-updated-wrap"> ' + betterDeals + ' </div> <div class="builder-details-wrap">' + builderDetail + '</div> ' + dropdownList + ' </div>';
