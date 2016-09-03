@@ -116,20 +116,22 @@ function bindEvents() {
 }
 
 function renderExtension(renderObj) {
-
+    var builderDetail = '';
     //access renderObj.minPrice and renderObj.maxPrice if exist renderObj.currentPageMinPrice renderObj.currentPageMaxPrice
     var midSec = '<div id="detailOutWrap"><div id="detailInWrap"><a class="logo" target="_blank" href="https://www.makaan.com" title="makaan"><img id="details_logo" src="http://s3-ap-southeast-1.amazonaws.com/propguide-prod/wp-content/uploads/2016/09/logo_64x64.png"></a><div class="content-wrap"><div id="details"><span class="txt-heading">Hurray !  Massive deals found. find better deals at <a href="https://www.makaan.com" title="makaan.com">makaan.com</a> </span></div>';
     if (renderObj && renderObj.projectOverviewUrl) {
         midSec += '<div class="visitHere"> To find better Deals <a class="linkToCompare" target="_blank" href="https://www.makaan.com/' + renderObj.projectOverviewUrl + '">click here</a></div>';
     }
     if (renderObj.builderOverviewUrl) {
-        midSec += '<div class="visitHere builderInfo"> about ' + renderObj.builderName + ' Details <a class="builderCompare" target="_blank" href="https://www.makaan.com/' + renderObj.builderOverviewUrl + '">click here</a></div>';
+        builderDetail = '<div class="visitHere builderInfo"> <a class="builderCompare" target="_blank" href="https://www.makaan.com/' + renderObj.builderOverviewUrl + '">about ' + renderObj.builderName + ' Details</a></div>';
     }
     midSec += '<div class="leadForm"><span>Do you have a query? </span> You can contact us <input placeholder="email" type="email" id="leadID" class="lead-input" /> <input placeholder="contact" type="tel" id="contact" class="contact" /> <button class="btnv2 btnv2-p"> Submit </button> </div>';
-    var dropdownList = '<div class="dropdown-wrap"><div>Choose your preferred platform:</div><ul><li class="js-platform-sel">Makaan</li><li class="js-platform-sel">Housing</li><li class="js-platform-sel">99acres</li><li class="js-platform-sel">Common Floor</li><li class="js-platform-sel">India Property</li></ul></div>';
+    var dropdownList = '<div class="dropdown-wrap"><div class="labelDD">Choose your preferred platform:</div><ul><li class="js-platform-sel">Makaan</li><li class="js-platform-sel">Housing</li><li class="js-platform-sel">99acres</li><li class="js-platform-sel">Common Floor</li><li class="js-platform-sel">India Property</li></ul></div>';
+    var botWrap = '<div class="bottom-wrap"> <div class="last-updated-wrap"> Get latest projects details here </div> <div class="builder-details-wrap">'+ builderDetail +'</div> '+ dropdownList+' </div>';
+    
     midSec += '</div></div></div>';
     var botSec = '';
-    var finalStr = midSec + dropdownList + botSec;
+    var finalStr = midSec + botWrap + botSec;
     $('head').before(finalStr);
     bindEvents();
 }
