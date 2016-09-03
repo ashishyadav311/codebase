@@ -18,6 +18,12 @@
 /*** text colors ***/
 /*** text colors ***/
 /*** font sizes ***/
+
+*{
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+}
+
 /* Button v2 with 2 border radius 25px and 6px  */
 .btnv2 {
   display: inline-block;
@@ -252,8 +258,8 @@
 
 .visitHere.builderInfo{
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 10px;
+    right: 10px;
     z-index: 999;
     font-family: "comfortaalight";
 }
