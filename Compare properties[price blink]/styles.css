@@ -1,5 +1,5 @@
 
-@import 'https://fonts.googleapis.com/css?family=Open+Sans';
+@import 'https://fonts.googleapis.com/css?family=Roboto';
 @font-face {
     font-family: 'comfortaalight';
     src: url('https://cdn-buyer1.makaan.com/iq/fonts/fonts/comfortaa-light.eot');
@@ -70,7 +70,7 @@
 
 
 #detailOutWrap *, .bottom-wrap *{
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 16px;
     color: #454545;
 }
@@ -319,10 +319,6 @@
     margin-left: 15px;
 }
 
-.bottom-wrap .dropdown-wrap .labelDD{
-    text-align: left;
-}
-
 .bottom-wrap .last-updated-wrap, 
 .builder-details-wrap,
 .dropdown-wrap{
@@ -331,6 +327,12 @@
     vertical-align: top;
     text-align: center;
     padding: 8px 12px;
+    font-family: "comfortaalight";
+}
+
+.bottom-wrap .dropdown-wrap .labelDD{
+    text-align: left;
+    font-family: "comfortaalight";
 }
 
 .bottom-wrap .dropdown-wrap{
@@ -352,9 +354,9 @@
     max-height: 300px;
     overflow: auto;
     background-color: #ffffff;
-    z-index: 999;
-    border-radius: 0 0 5px 5px;
-    box-shadow: 0 0 3px -1 rgba(80, 80, 80, .7);
+    z-index: 99999;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 0 3px -1 rgba(60, 60, 60, .7);
     color: #454545;
 }
 
@@ -366,6 +368,7 @@
     cursor: pointer;
     transition: all 300ms ease-in-out;
     cursor: pointer;
+    font-family: 'Roboto', sans-serif;
 }
 .bottom-wrap .dropdown-wrap ul li:hover{
     background-color: #e81c28;

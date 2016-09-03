@@ -66,6 +66,8 @@ function getProjectDetails(projectIds, data) {
                 var results = JSON.parse(httpRequest.responseText);
                 var renderObj = {};
                 renderObj.projectOverviewUrl = results.data.overviewUrl;
+                renderObj.cityId = results.data.locality.suburb.city.id;
+                renderObj.cityName = results.data.locality.suburb.city.label;
                 if (results.data && results.data.builder && results.data.builder.url) {
                     renderObj.builderOverviewUrl = results.data.builder.url;
                     renderObj.builderName = results.data.builder.name;
@@ -106,11 +108,36 @@ function getProjectDetails(projectIds, data) {
     }
 }
 
-function bindEvents() {
+function bindEvents(renderObj) {
     $('.js-platform-sel').each(function(idx) {
         $(this).on("click", function() {
             console.log($(this).text(), 'clicked');
             // get project page and builder page for this site
+        });
+    })
+    $('.leadSubmit').on('click', function() {
+
+        var data = {};
+        data.email = $('#leadID').val();
+        data.phone = $('#contact').val();
+        var emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (data.email && !emailRegex.test(data.email.trim())) {
+            return;
+        }
+        data.domainId = 1;
+        data.countryId = 1;
+        data.multipleCompanyIds = [499];
+        data.projectName = renderObj.projectOverviewUrl;
+        data.cityId = renderObj.cityId;
+        data.cityName = renderObj.cityName;
+        data.salesType = 'buy';
+        data.applicationType = 'Desktop Site';
+        data.pageUrl = window.location.pathname;
+        data.jsonDump = window.navigator.userAgent;
+        leadSubmit(JSON.stringify(data)).then(function(response) {
+            console.log('successfully posted lead')
+        }, function(error) {
+            console.log('error in posted lead');
         });
     })
 }
@@ -125,27 +152,44 @@ function renderExtension(renderObj) {
     if (renderObj.builderOverviewUrl) {
         builderDetail = '<div class="visitHere builderInfo"> <a class="builderCompare" target="_blank" href="https://www.makaan.com/' + renderObj.builderOverviewUrl + '">about ' + renderObj.builderName + ' Details</a></div>';
     }
-    midSec += '<div class="leadForm"><span>Do you have a query? </span> You can contact us <input placeholder="email" type="email" id="leadID" class="lead-input" /> <input placeholder="contact" type="tel" id="contact" class="contact" /> <button class="btnv2 btnv2-p"> Submit </button> </div>';
+    midSec += '<div class="leadForm"><span>Do you have a query? </span> You can contact us <input placeholder="email" type="email" id="leadID" class="lead-input" /> <input placeholder="contact" type="tel" id="contact" class="contact" /> <button class="btnv2 btnv2-p leadSubmit"> Submit </button> </div>';
     var dropdownList = '<div class="dropdown-wrap"><div class="labelDD">Choose your preferred platform:</div><ul><li class="js-platform-sel">Makaan</li><li class="js-platform-sel">Housing</li><li class="js-platform-sel">99acres</li><li class="js-platform-sel">Common Floor</li><li class="js-platform-sel">India Property</li></ul></div>';
     var botWrap = '<div class="bottom-wrap"> <div class="last-updated-wrap"> Get latest projects details here </div> <div class="builder-details-wrap">'+ builderDetail +'</div> '+ dropdownList+' </div>';
-    
     midSec += '</div></div></div>';
     var botSec = '';
     var finalStr = midSec + botWrap + botSec;
     $('head').before(finalStr);
-    bindEvents();
+    bindEvents(renderObj);
 }
 
 
 function getProjectDataCommonFloor() {
-    var httpRequest = new XMLHttpRequest();
-    var project_id = location.pathname.split('/')[2].split('-')[1];
-    httpRequest.open('GET', 'https://www.commonfloor.com/properties/listing/get-listings-for-project/?project_id=' + project_id);
-    httpRequest.send();
     var url = 'https://www.commonfloor.com/properties/listing/get-listings-for-project/?project_id=' + project_id;
     var options = {
         method: 'GET',
         url: url
+    };
+    var request = $.ajax(options);
+    var promise = request
+        .then(function(response) {
+            return response;
+        }, function(error) {
+            return error;
+            (function(error) {
+                return errorHandler(error);
+            })(error)
+        })
+        .always(function() {});
+    promise.abort = request.abort;
+    return promise;
+}
+
+function leadSubmit(data) {
+    var url = 'https://beta.makaan-ws.com/petra/data/v1/entity/enquiry?debug=true';
+    var options = {
+        method: 'POST',
+        url: url,
+        data: data
     };
     var request = $.ajax(options);
     var promise = request
