@@ -26,7 +26,6 @@ var coupon_code_exception_rids = [];
 var DEBUG = false;
 var debug_info = {};
 var getProjectDetailsUrl = 'https://www.makaan.com/petra/app/v4/project-detail';
-
 var helperFunction = {
     getFormetedPrice: function(price) {
         if (price.indexOf('C')) {
@@ -111,9 +110,13 @@ function getProjectDetails(projectIds, data) {
 function bindEvents(renderObj) {
     $('.js-platform-sel').each(function(idx) {
         $(this).on("click", function() {
-            console.log($(this).text(), 'clicked');
-            // get project page and builder page for this site
+            var getsvalue = $(this).text();
+            $('.labelDD').html(getsvalue);
+            $('.dropdown-wrap ul').css('display', 'none')
         });
+    })
+    $('.dropdown-wrap .labelDD').on('click', function() {
+        $('.dropdown-wrap ul').css('display', 'block')
     })
     $('.leadSubmit').on('click', function() {
 
@@ -154,7 +157,7 @@ function renderExtension(renderObj) {
     }
     midSec += '<div class="leadForm"><span>Do you have a query? </span> You can contact us <input placeholder="email" type="email" id="leadID" class="lead-input" /> <input placeholder="contact" type="tel" id="contact" class="contact" /> <button class="btnv2 btnv2-p leadSubmit"> Submit </button> </div>';
     var dropdownList = '<div class="dropdown-wrap"><div class="labelDD">Choose your preferred platform:</div><ul><li class="js-platform-sel">Makaan</li><li class="js-platform-sel">Housing</li><li class="js-platform-sel">99acres</li><li class="js-platform-sel">Common Floor</li><li class="js-platform-sel">India Property</li></ul></div>';
-    var botWrap = '<div class="bottom-wrap"> <div class="last-updated-wrap"> Get latest projects details here </div> <div class="builder-details-wrap">'+ builderDetail +'</div> '+ dropdownList+' </div>';
+    var botWrap = '<div class="bottom-wrap"> <div class="last-updated-wrap"> Get latest projects details here </div> <div class="builder-details-wrap">' + builderDetail + '</div> ' + dropdownList + ' </div>';
     midSec += '</div></div></div>';
     var botSec = '';
     var finalStr = midSec + botWrap + botSec;
