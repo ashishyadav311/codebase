@@ -206,7 +206,7 @@
 
 #detailOutWrap .logo{
     display: inline-block;
-    vertical-align: top;
+    vertical-align: middle;
     width: 50px;
     height: 50px;
 }
@@ -218,13 +218,14 @@
 #detailOutWrap #details{
     display: inline-block;
     vertical-align: middle;
+    width: 22%;
 }
 
 #detailOutWrap .content-wrap{
     margin-left: 15px;
     display: inline-block;
     vertical-align: middle;
-    width: calc(100% - 70px);
+    width: calc(100% - 76px);
 }
 
 #details .txt-heading{
@@ -269,6 +270,12 @@
     font-family: "comfortaalight";
 }
 
+.bottom-wrap .visitHere img{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
 .visitHere.builderInfo{
     position: relative;
     font-family: "comfortaalight";
@@ -305,6 +312,9 @@
     font-family: "comfortaalight";
     font-size: 16px;
     text-align: center;
+    display: inline-block;
+    vertical-align: middle;
+    width: 78%;
 }
 
 .leadForm input{
@@ -333,12 +343,20 @@
 .bottom-wrap .dropdown-wrap .labelDD{
     text-align: left;
     font-family: "comfortaalight";
+    max-width: 270px;
+    vertical-align: middle;
+    display: inline-block;
 }
 
 .bottom-wrap .dropdown-wrap{
-    max-width: 300px;
+    max-width: 350px;
     width: 100%;
     position: relative;
+}
+
+.bottom-wrap .dropdown-wrap img{ 
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .bottom-wrap .dropdown-wrap ul{
@@ -354,7 +372,7 @@
     max-height: 300px;
     overflow: auto;
     background-color: #ffffff;
-    z-index: 99999;
+    z-index: 999999;
     border-radius: 0 0 8px 8px;
     box-shadow: 0 0 3px -1 rgba(60, 60, 60, .7);
     color: #454545;
