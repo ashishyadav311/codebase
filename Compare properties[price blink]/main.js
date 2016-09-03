@@ -182,7 +182,7 @@ function renderExtension(renderObj) {
     midSec += '<div class="leadForm"><span>Do you have a query? </span> You can contact us <input placeholder="email" type="email" id="leadID" class="lead-input" /> <input placeholder="mobile" type="tel" id="contact" class="contact" /> <button class="btnv2 btnv2-p leadSubmit"> Submit </button> </div>';
 
     var dropdownList = '<div class="dropdown-wrap"><img src="http://s3-ap-southeast-1.amazonaws.com/propguide-prod/wp-content/uploads/2016/09/builder.png" /><div class="labelDD">Choose your preferred platform:</div><ul style="display:none"><li data-sel="makaan" class="js-platform-sel">Makaan</li><li data-sel="housing" class="js-platform-sel">Housing</li><li data-sel="99acres" class="js-platform-sel">99acres</li><li data-sel="commonfloor" class="js-platform-sel">Common Floor</li><li data-sel="indiaproperty" class="js-platform-sel">India Property</li></ul></div>';
-    var botWrap = '<div class="bottom-wrap"> <div class="last-updated-wrap"> ' + betterDeals + ' </div> <div class="builder-details-wrap">'+ builderDetail +'</div> '+ dropdownList+' </div>';
+    var botWrap = '<div class="bottom-wrap"> <div class="last-updated-wrap"> ' + betterDeals + ' </div> <div class="builder-details-wrap">' + builderDetail + '</div> ' + dropdownList + ' </div>';
 
     midSec += '</div></div></div>';
     var botSec = '';
@@ -218,7 +218,10 @@ function leadSubmit(data) {
     var options = {
         method: 'POST',
         url: url,
-        data: data
+        data: data,
+        headers: {
+            'content-type': 'application/json'
+        }
     };
     var request = $.ajax(options);
     var promise = request
