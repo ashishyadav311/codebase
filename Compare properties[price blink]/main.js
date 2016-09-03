@@ -156,7 +156,7 @@ function renderExtension(renderObj) {
         builderDetail = '<div class="visitHere builderInfo"> <a class="builderCompare" target="_blank" href="https://www.makaan.com/' + renderObj.builderOverviewUrl + '">about ' + renderObj.builderName + ' Details</a></div>';
     }
     midSec += '<div class="leadForm"><span>Do you have a query? </span> You can contact us <input placeholder="email" type="email" id="leadID" class="lead-input" /> <input placeholder="contact" type="tel" id="contact" class="contact" /> <button class="btnv2 btnv2-p leadSubmit"> Submit </button> </div>';
-    var dropdownList = '<div class="dropdown-wrap"><div class="labelDD">Choose your preferred platform:</div><ul><li class="js-platform-sel">Makaan</li><li class="js-platform-sel">Housing</li><li class="js-platform-sel">99acres</li><li class="js-platform-sel">Common Floor</li><li class="js-platform-sel">India Property</li></ul></div>';
+    var dropdownList = '<div class="dropdown-wrap"><div class="labelDD">Choose your preferred platform:</div><ul style="display:none"><li class="js-platform-sel">Makaan</li><li class="js-platform-sel">Housing</li><li class="js-platform-sel">99acres</li><li class="js-platform-sel">Common Floor</li><li class="js-platform-sel">India Property</li></ul></div>';
     var botWrap = '<div class="bottom-wrap"> <div class="last-updated-wrap"> Get latest projects details here </div> <div class="builder-details-wrap">' + builderDetail + '</div> ' + dropdownList + ' </div>';
     midSec += '</div></div></div>';
     var botSec = '';
